@@ -1,0 +1,547 @@
+direction: down
+
+# ─── TITLE ───
+title: |md
+  # Phantom
+  **A mind that inhabits screens**
+  Imagination-first visual computer-use agent
+| {
+  style: {
+    font-color: "#c8d6e5"
+    fill: "#0a0a1a"
+    stroke: "#2d3436"
+    border-radius: 12
+  }
+}
+
+# ─── EXTERNAL INTERFACE ───
+claude-code: Claude Code {
+  style: {
+    fill: "#1a1a2e"
+    stroke: "#d4a574"
+    font-color: "#d4a574"
+    border-radius: 8
+    bold: true
+  }
+}
+
+mcp: MCP Server {
+  style: {
+    fill: "#16213e"
+    stroke: "#4a90d9"
+    font-color: "#e8e8e8"
+    border-radius: 8
+  }
+}
+
+cli: CLI {
+  style: {
+    fill: "#16213e"
+    stroke: "#4a90d9"
+    font-color: "#e8e8e8"
+    border-radius: 8
+  }
+}
+
+claude-code -> mcp: task / goal {
+  style.stroke: "#d4a574"
+}
+mcp -> claude-code: files in sandbox {
+  style.stroke: "#d4a574"
+  style.stroke-dash: 5
+}
+cli -> mcp: direct invoke {
+  style.stroke: "#4a90d9"
+  style.stroke-dash: 3
+}
+
+# ─── THE COGNITIVE LOOP ───
+cognitive: COGNITIVE CORE {
+  style: {
+    fill: "#0d1117"
+    stroke: "#58a6ff"
+    font-color: "#58a6ff"
+    border-radius: 12
+    bold: true
+  }
+
+  # ─── MIRROR (Imagination / Consciousness) ───
+  mirror: "THE MIRROR — Imagination" {
+    style: {
+      fill: "#1a1130"
+      stroke: "#a855f7"
+      font-color: "#c4b5fd"
+      border-radius: 10
+      bold: true
+    }
+
+    imagine: |md
+      **IMAGINE**
+      Generate expected state
+      _"What should this page look like?"_
+    | {
+      style: {
+        fill: "#2d1b4e"
+        stroke: "#a855f7"
+        font-color: "#e8e8e8"
+        border-radius: 8
+      }
+    }
+
+    diff: |md
+      **DIFF**
+      Prediction error
+      _imagination vs reality_
+    | {
+      style: {
+        fill: "#2d1b4e"
+        stroke: "#a855f7"
+        font-color: "#e8e8e8"
+        border-radius: 8
+      }
+    }
+  }
+
+  # ─── TREES (Dual Perception / Working Memory) ───
+  trees: "THE TREES — Dual Perception" {
+    style: {
+      fill: "#0d1f0d"
+      stroke: "#22c55e"
+      font-color: "#86efac"
+      border-radius: 10
+      bold: true
+    }
+
+    visual: |md
+      **VISUAL CORTEX**
+      Screenshot + SoM
+      Layout, colors, spatial
+    | {
+      style: {
+        fill: "#1a2e1a"
+        stroke: "#22c55e"
+        font-color: "#e8e8e8"
+        border-radius: 8
+      }
+    }
+
+    analytical: |md
+      **ANALYTICAL CORTEX**
+      DOM / a11y / macOS AX
+      Structure, state, handlers
+    | {
+      style: {
+        fill: "#1a2e1a"
+        stroke: "#22c55e"
+        font-color: "#e8e8e8"
+        border-radius: 8
+      }
+    }
+
+    reconciler: |md
+      **RECONCILER**
+      Merge dual views
+      Disagreement = information
+    | {
+      style: {
+        fill: "#0f3d0f"
+        stroke: "#4ade80"
+        font-color: "#ffffff"
+        border-radius: 8
+        bold: true
+      }
+    }
+
+    visual -> reconciler: visual perception {
+      style.stroke: "#22c55e"
+    }
+    analytical -> reconciler: structural perception {
+      style.stroke: "#22c55e"
+    }
+  }
+
+  # ─── ACTION PIPELINE ───
+  affordances: |md
+    **AFFORDANCES**
+    Elements as action potentials
+    _"What can I DO here?"_
+  | {
+    style: {
+      fill: "#1e293b"
+      stroke: "#f59e0b"
+      font-color: "#fcd34d"
+      border-radius: 8
+    }
+  }
+
+  planner: |md
+    **PLANNER**
+    Spreading activation
+    Goal → relevant actions
+  | {
+    style: {
+      fill: "#1e293b"
+      stroke: "#f59e0b"
+      font-color: "#e8e8e8"
+      border-radius: 8
+    }
+  }
+
+  # ─── SECURITY ───
+  security: SECURITY {
+    style: {
+      fill: "#1a0a0a"
+      stroke: "#ef4444"
+      font-color: "#fca5a5"
+      border-radius: 10
+      bold: true
+    }
+
+    critic: |md
+      **ALIGNMENT CRITIC**
+      Haiku on every action
+      _"Does this serve the intent?"_
+    | {
+      style: {
+        fill: "#2d1212"
+        stroke: "#ef4444"
+        font-color: "#e8e8e8"
+        border-radius: 8
+      }
+    }
+
+    guard: |md
+      **SECURITY MEMBRANE**
+      Content isolation
+      HTTP sandbox
+      Credential vault
+    | {
+      style: {
+        fill: "#2d1212"
+        stroke: "#ef4444"
+        font-color: "#e8e8e8"
+        border-radius: 8
+      }
+    }
+
+    critic -> guard: validated {
+      style.stroke: "#ef4444"
+    }
+  }
+
+  # ─── MOTOR SYSTEM ───
+  motor: |md
+    **MOTOR SYSTEM**
+    Bezier mouse · Gaussian typing
+    Momentum scroll · Human-like
+  | {
+    style: {
+      fill: "#1e293b"
+      stroke: "#06b6d4"
+      font-color: "#e8e8e8"
+      border-radius: 8
+    }
+  }
+
+  # ─── COGNITIVE FLOW ───
+  mirror.imagine -> trees.reconciler: observe reality {
+    style.stroke: "#a855f7"
+    style.stroke-dash: 3
+  }
+  trees.reconciler -> mirror.diff: page model {
+    style.stroke: "#22c55e"
+  }
+  mirror.diff -> affordances: prediction error {
+    style.stroke: "#a855f7"
+  }
+  affordances -> planner: action potentials {
+    style.stroke: "#f59e0b"
+  }
+  planner -> security.critic: intended action {
+    style.stroke: "#f59e0b"
+  }
+  security.guard -> motor: safe action {
+    style.stroke: "#ef4444"
+  }
+}
+
+# ─── THE MATRIX (World Model) ───
+matrix: "THE MATRIX — World Model" {
+  style: {
+    fill: "#0a1628"
+    stroke: "#3b82f6"
+    font-color: "#93c5fd"
+    border-radius: 10
+    bold: true
+  }
+
+  graph: |md
+    **SQLite Graph**
+    Site patterns · Causal edges
+    Spreading activation
+    Reconsolidation on surprise
+  | {
+    style: {
+      fill: "#1e3a5f"
+      stroke: "#3b82f6"
+      font-color: "#e8e8e8"
+      border-radius: 8
+    }
+  }
+}
+
+# ─── LEARN LOOP ───
+cognitive.motor -> matrix: prediction error → learn {
+  style.stroke: "#3b82f6"
+  style.stroke-dash: 5
+  style.animated: true
+}
+matrix -> cognitive.mirror.imagine: priors + expectations {
+  style.stroke: "#3b82f6"
+  style.stroke-dash: 5
+  style.animated: true
+}
+
+# ─── PLUGGABLE BACKENDS ───
+backends: PLUGGABLE BACKENDS {
+  style: {
+    fill: "#1a1a1a"
+    stroke: "#6b7280"
+    font-color: "#9ca3af"
+    border-radius: 10
+  }
+
+  perception: Perception {
+    style: {
+      fill: "#1e293b"
+      stroke: "#22c55e"
+      font-color: "#86efac"
+      border-radius: 8
+    }
+
+    claude-v: Claude Vision {
+      style.fill: "#2d1b4e"
+      style.stroke: "#a855f7"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+    lux: Lux (OpenAGI) {
+      style.fill: "#1a2e1a"
+      style.stroke: "#22c55e"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+    omni: OmniParser {
+      style.fill: "#1a2e1a"
+      style.stroke: "#22c55e"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+    pw-a11y: Playwright a11y {
+      style.fill: "#1a2e1a"
+      style.stroke: "#22c55e"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+  }
+
+  action: Action {
+    style: {
+      fill: "#1e293b"
+      stroke: "#06b6d4"
+      font-color: "#67e8f9"
+      border-radius: 8
+    }
+
+    playwright: Playwright / Patchright {
+      style.fill: "#0a2530"
+      style.stroke: "#06b6d4"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+    camoufox: Camoufox {
+      style.fill: "#0a2530"
+      style.stroke: "#06b6d4"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+    pyautogui: PyAutoGUI {
+      style.fill: "#0a2530"
+      style.stroke: "#06b6d4"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+    macos: macOS AX {
+      style.fill: "#0a2530"
+      style.stroke: "#06b6d4"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+  }
+
+  adapters: Adapters {
+    style: {
+      fill: "#1e293b"
+      stroke: "#6b7280"
+      font-color: "#d1d5db"
+      border-radius: 8
+    }
+
+    browser: Browser {
+      style.fill: "#2d3748"
+      style.stroke: "#9ca3af"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+    desktop: Desktop {
+      style.fill: "#2d3748"
+      style.stroke: "#9ca3af"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+    screen: Any Window {
+      style.fill: "#2d3748"
+      style.stroke: "#9ca3af"
+      style.font-color: "#e8e8e8"
+      style.border-radius: 6
+    }
+  }
+}
+
+# ─── BACKEND CONNECTIONS ───
+cognitive.trees.visual -> backends.perception: screenshot {
+  style.stroke: "#22c55e"
+  style.stroke-dash: 3
+}
+cognitive.trees.analytical -> backends.perception: structure {
+  style.stroke: "#22c55e"
+  style.stroke-dash: 3
+}
+cognitive.motor -> backends.action: motor commands {
+  style.stroke: "#06b6d4"
+  style.stroke-dash: 3
+}
+backends.adapters -> backends.perception: routes to {
+  style.stroke: "#6b7280"
+  style.stroke-dash: 3
+}
+backends.adapters -> backends.action: routes to {
+  style.stroke: "#6b7280"
+  style.stroke-dash: 3
+}
+
+# ─── MCP CONNECTION ───
+mcp -> cognitive.mirror.imagine: task {
+  style.stroke: "#4a90d9"
+}
+cognitive.motor -> mcp: results {
+  style.stroke: "#4a90d9"
+  style.stroke-dash: 5
+}
+
+# ─── TIERED PERCEPTION ───
+tiers: TIERED PERCEPTION {
+  style: {
+    fill: "#1a1a2e"
+    stroke: "#8b5cf6"
+    font-color: "#c4b5fd"
+    border-radius: 10
+  }
+
+  t0: "T0 Reflex — 0 tokens" {
+    style.fill: "#1e1e3a"
+    style.stroke: "#4ade80"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+  t1: "T1 Glance — 500 tokens" {
+    style.fill: "#1e1e3a"
+    style.stroke: "#facc15"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+  t2: "T2 Look — 2K tokens" {
+    style.fill: "#1e1e3a"
+    style.stroke: "#f97316"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+  t3: "T3 Study — 5K tokens" {
+    style.fill: "#1e1e3a"
+    style.stroke: "#ef4444"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+
+  t0 -> t1 -> t2 -> t3: escalate on surprise {
+    style.stroke: "#8b5cf6"
+    style.stroke-dash: 3
+  }
+}
+
+cognitive.mirror.diff -> tiers: prediction error selects tier {
+  style.stroke: "#8b5cf6"
+  style.stroke-dash: 5
+}
+
+# ─── PS ECOSYSTEM ───
+ecosystem: PS ECOSYSTEM {
+  style: {
+    fill: "#1a1a1a"
+    stroke: "#d4a574"
+    font-color: "#d4a574"
+    border-radius: 10
+  }
+
+  am: Associative Memory {
+    style.fill: "#1a1130"
+    style.stroke: "#a855f7"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+  companion: The Companion {
+    style.fill: "#0d1f0d"
+    style.stroke: "#22c55e"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+  spatial: Spatial Workspace {
+    style.fill: "#1e293b"
+    style.stroke: "#3b82f6"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+}
+
+ecosystem.am -> matrix: Three Planes architecture {
+  style.stroke: "#a855f7"
+  style.stroke-dash: 5
+}
+ecosystem.companion -> cognitive: visual perception layer {
+  style.stroke: "#22c55e"
+  style.stroke-dash: 5
+}
+ecosystem.spatial -> matrix: visualize world model {
+  style.stroke: "#3b82f6"
+  style.stroke-dash: 5
+}
+
+# ─── SANDBOX ───
+sandbox: "~/.phantom/workspace/" {
+  shape: cylinder
+  style: {
+    fill: "#2d1212"
+    stroke: "#ef4444"
+    font-color: "#fca5a5"
+    border-radius: 8
+  }
+}
+
+cognitive.motor -> sandbox: screenshots + findings {
+  style.stroke: "#ef4444"
+  style.stroke-dash: 3
+}
+sandbox -> claude-code: read results {
+  style.stroke: "#d4a574"
+  style.stroke-dash: 5
+}
