@@ -1,38 +1,96 @@
-# Phantom — Visual Computer-Use Agent
+# GRP — Generative Reconciliation Perception
 
-**A cognitive architecture for AI agents that see, imagine, and inhabit digital environments.**
+**The perception subsystem of [The Synthetic Sentiences Project](https://github.com/Playful-Sincerity/Synthetic-Sentiences-Project).**
 
-Built by Wisdom Happy / Playful Sincerity Research.
-Conceived 2026-03-31 during hackathon research sprint.
+A cognitive architecture for AI agents that see, imagine, and inhabit digital environments. Perception is generative-first: the being imagines expected state, observes the world, and reconciles the two. Prediction error is the primary learning and attention signal.
+
+Authored by Wisdom Happy / Playful Sincerity Research.
+Originally conceived 2026-03-31 under the codename "Phantom" (a stealth-property name).
+Renamed and reframed 2026-04-22 to GRP — naming the actual mechanism rather than a side property.
 
 ---
 
 ## Vision
 
-Phantom is a visual computer-use agent that Claude Code (or any MCP client) can dispatch as a scout. It goes out, sees any window — browser, desktop app, any screen — interacts with it using human-like behavior, and reports back with files in a sandboxed workspace.
+GRP is a perception subsystem that any sentience built on the SSP architecture can dispatch as a scout. It goes out, sees a window — browser, desktop application, any screen — interacts with it using human-like behavior, and reports back through the being's memory graph (MWM).
 
 It is not a script that pokes at a DOM. It is a small mind that inhabits a screen.
 
-### What makes it different
+### Two distinct perceptual modes
 
-Every existing browser/computer-use agent is **reactive**: observe → decide → act → repeat. They process each page from scratch, with no expectations, no memory, no sense of what elements afford, no internal model that gets surprised.
+GRP supports two modes of imagine-before-act:
 
-Phantom is **predictive**: it imagines what it expects to see before looking, perceives through dual channels simultaneously, understands pages as fields of affordances (action potentials), and learns from the gap between prediction and reality. The prediction error is the primary learning and attention signal.
+1. **Next-state imagination** — Predict the immediate consequence of the next action. WebDreamer-style. Used for tier selection and prediction-error-gated learning.
+2. **End-state imagination** — Imagine the *final* state, or an entire video of the action sequence, and reverse-engineer the concrete actions needed to produce that imagined outcome. This is the highest-leverage use of the imagination engine.
+
+End-state imagination is the more valuable mode. The quality of output scales with the quality of imagination, not the density of step-by-step reasoning. Imagine well, reverse-engineer fast, produce high-quality output. See [Imagine-Before-Act § Primary Use Case](#imagine-before-act--the-primary-use-case) below.
 
 ### Core use cases
 
-1. **Verification** — "Go check if my deploy looks right" → screenshots, analyzes, compares against expectations, reports
-2. **Tool interaction** — "Log into n8n and check the last 5 workflow executions" → navigates, authenticates (credentials never in LLM context), extracts data
-3. **Visual QA** — "Does this page match the Figma mock?" → screenshots both, compares layout/styling/content
-4. **Form filling** — "Submit this application form with these details" → fills forms with human-like input patterns
-5. **Code verification** — Write code → Phantom opens preview → screenshots what it looks like → compares against what it SHOULD look like → reports misalignments → Claude Code fixes → iterate
-6. **Temporal verification** — "Does the loading animation feel smooth?" → screen sampling over time, not just single screenshots
+1. **Web design.** Screenshot the current page → imagine how it should look (or imagine a video of a user experiencing it perfectly) → generate the code that produces that imagined result. Qualitatively different from "screenshot and describe": the imagination holds the target; reverse-engineering produces the diff.
+2. **Robotics.** Imagine the task being performed end-to-end → compute motor commands whose execution would reproduce the imagined video. Same mechanism, different output channel.
+3. **Verification.** "Go check if my deploy looks right" → screenshots, analyzes, compares against expectations, reports.
+4. **Tool interaction.** "Log into n8n and check the last 5 workflow executions" → navigates, authenticates (credentials never in LLM context), extracts data.
+5. **Visual QA.** "Does this page match the Figma mock?" → screenshots both, compares layout/styling/content.
+6. **Form filling.** "Submit this application form with these details" → fills forms with human-like input patterns.
+7. **Code-from-vision.** Write code → GRP opens preview → screenshots what it looks like → compares against what it SHOULD look like → reports misalignments → upstream agent fixes → iterate.
+8. **Temporal verification.** "Does the loading animation feel smooth?" → screen sampling over time, not just single screenshots.
+
+---
+
+## Imagine-Before-Act — The Primary Use Case
+
+The most valuable deployment of GRP's imagination engine is **end-state imagination with reverse-engineering**, not next-state prediction.
+
+### The mechanism
+
+```
+TASK INTENT  ─────►  IMAGINE END STATE  ─────►  REVERSE-ENGINEER ACTIONS  ─────►  ACT  ─────►  RECONCILE
+                    (or full video of                (motor commands or
+                     action sequence)                 code that produce it)
+```
+
+### Why this matters
+
+Step-by-step reasoning is bottlenecked by the quality of each step's grounding. End-state imagination is bottlenecked by the quality of imagination itself — and modern foundation models can imagine final states at a far higher quality than they can ground intermediate steps. Inverting the pipeline (imagine target → derive actions) shifts work to where the model is strongest.
+
+### Two concrete instantiations
+
+**Web design.**
+- Input: current page screenshot + design intent
+- Imagine: the target page (or a short video of a user experiencing it correctly)
+- Reverse-engineer: the diff in HTML/CSS/JS that produces the imagined target
+- Verify: render the diff, compare to the imagined target, iterate on prediction error
+
+**Robotics / motor control.**
+- Input: task description + current scene
+- Imagine: the full video of the task being performed correctly
+- Reverse-engineer: the motor commands whose execution reproduces the imagined video
+- Verify: execute, compare observed video to imagined video, iterate
+
+### Connection to the unification thesis
+
+Imagine-before-act in GRP, value-aligned modulation as gap-between-perceived-and-should-world (Values), and dream-cycle simulation (Cycles) are the same mechanism applied at three scales: task-scale (GRP), being-scale (Values), moment-scale (Cycles). The imagination engine is shared infrastructure across these subsystems.
+
+---
+
+## Collaborative Generation — A Reframe of the Adversarial Paradigm
+
+GANs (Generative Adversarial Networks) frame generator and discriminator as **competitors** — one tries to fool, one tries to detect. GRP's architecture is different: the imagined world and the observed world are **collaborators**. Both work to converge.
+
+The being adjusts actions AND its own understanding so the observed matches the imagined — both sides of the architecture are trying to close the gap. Neither is the adversary of the other.
+
+This is a gravitational-attraction reframe of a classic adversarial pattern. It is consistent with the rest of the Synthetic Sentiences Project's alignment story (Gravitationalism: the universe converges through attraction, not opposition).
+
+**Working term:** *Generative Collaborative Network* (concept). The natural acronym GCN is taken in ML literature (Graph Convolutional Network), so a paper publication will need a different shorthand. The concept stands regardless of what it is eventually called.
+
+**Architectural consequence.** Reconciliation is not a competition between channels (visual vs. analytical) or between expectation and observation. It is a cooperative procedure that closes the gap by updating the side that is most-cheaply-updated given current evidence. Surprise is information, not failure.
 
 ---
 
 ## Philosophical Foundation
 
-### Three paradigms of browser automation
+### Three paradigms of computer-use perception
 
 **Paradigm 1: "Script the DOM"** (Selenium, Puppeteer, traditional)
 > The browser is a machine. Send commands. Parse responses.
@@ -42,8 +100,8 @@ Phantom is **predictive**: it imagines what it expects to see before looking, pe
 > Dump the page as text → send to LLM → parse action → execute.
 > Problem: blind between actions, content mixes with instructions, no spatial understanding.
 
-**Paradigm 3: "Imagine and Inhabit"** (Phantom)
-> The AI looks at the page the way a human does — as a visual scene with spatial relationships. It maintains a continuous mental model. It predicts before it acts. It learns from surprise.
+**Paradigm 3: "Imagine and Inhabit"** (GRP)
+> The agent looks at the page the way a human does — as a visual scene with spatial relationships. It maintains a continuous mental model. It imagines what should be there before it looks. It learns from surprise. It can imagine the end state and reverse-engineer the path.
 
 ### The four separations
 
@@ -52,29 +110,22 @@ Phantom is **predictive**: it imagines what it expects to see before looking, pe
 3. **PAGE CONTENT ≠ INSTRUCTIONS** — Web content is always untrusted data, structurally separated.
 4. **CREDENTIALS ≠ CONTEXT** — Passwords/tokens never enter the LLM's context window.
 
-### Cross-pollination from Associative Memory
+---
 
-Phantom's architecture draws directly from the Associative Memory project (~/Playful Sincerity/PS Research/Associative Memory/):
+## Integration with Other SSP Subsystems
 
-| Associative Memory | Phantom |
+GRP is one of nine subsystems. It does not stand alone — it produces and consumes structure that other subsystems shape.
+
+| Subsystem | Relationship to GRP |
 |---|---|
-| The Matrix (long-term graph) | Site Knowledge Graph — accumulated patterns, layouts, login flows |
-| The Trees (working memory) | Page Model — current page's dual-perception output, ephemeral |
-| The Mirror (consciousness) | Imagination Layer — watches everything, generates expectations, detects prediction errors |
-| Navigation, not retrieval | In-page spreading activation for element attention |
-| Causal edges from tool use | Click X → page Y loads = Pearl's Layer 2 interventional knowledge |
-| Reconsolidation under prediction error | World model updates only when surprised |
-| Epistemic humility + curiosity | Unknown elements become weighted exploration targets |
-| Action-oriented meaning | Elements perceived as affordances (Gibson's ecological psychology) |
-
-### Cross-pollination from The Companion
-
-| The Companion | Phantom |
-|---|---|
-| Earned conviction, not installed beliefs | Agent learns site patterns from experience, not hardcoded rules |
-| Cognitive dissonance detector | When visual and analytical cortex disagree = dissonance = information |
-| Belief graph with confidence | Page model elements have confidence levels |
-| Information gap tracking | Unknown elements become curiosity-weighted exploration targets |
+| **MWM (Memory as World Model)** | Predicted states and observed states write nodes/edges into the graph. Causal edges (clicking X caused Y) become Pearl-Layer-2 entries in the being's world model. Site patterns, layouts, and learned affordances live in MWM. The graph is GRP's long-term store. |
+| **Cognition (Earned Conviction)** | Page elements have confidence levels rooted in evidence chains. Disagreements between perception channels are cognitive dissonance — the same primitive cognition uses to surface unresolved beliefs. Curiosity about unknown elements is the same affect that drives investigation in cognition. |
+| **Values (Value-Aligned Modulation)** | What to attend to, what to imagine, and what to consider acceptable are weighted by current value-alignment state. The alignment critic (Haiku checking each action) is a value-aligned check at the perception/action boundary. |
+| **Trees (Working Memory)** | The current page or screen is a node in the working tree. Spreading activation focuses attention on goal-relevant elements. The tree grows when new perceptual content is loaded; it shrinks when perceptions stop being relevant. |
+| **Action** | Perceptions feed action selection. Actions change the observed world and produce new perceptions. The IMAGINE → ACT → RECONCILE loop is what binds GRP to Action: one is the seeing arm, the other is the moving arm of the same loop. |
+| **Cycles (Sleep & Dream)** | Dream cycles use GRP's imagination engine to simulate without observing — adversarial self-reflection, value-conflict tests, hypothetical scenarios. Sleep cycles consolidate experiential perception nodes into long-term graph structure. |
+| **Mirror** | The mirror watches GRP's behavior across sessions. Patterns in what GRP misperceives, what it cannot reconcile, what it consistently surprises itself with, become observations the mirror writes about the being. |
+| **Voice (Epistemic Prosody)** | When the being speaks about what it perceived, its acoustic prosody should reflect the confidence levels in the page model. Honest disfluency around low-confidence perceptions is prosodic accuracy, not a defect. |
 
 ---
 
@@ -88,42 +139,46 @@ IMAGINE → OBSERVE → RECONCILE → DIFF → PLAN → CHECK → GUARD → ACT 
    └──────────────── update world model from prediction errors ──────────┘
 ```
 
-- **IMAGINE** — Generate expected state from world model + task + last action
-- **OBSERVE** — Dual perception: visual cortex + analytical cortex simultaneously
-- **RECONCILE** — Merge both views, flag disagreements as cognitive dissonance
-- **DIFF** — Compare imagination vs reality; prediction error magnitude drives attention
-- **PLAN** — Select action from affordance-aware page model (spreading activation)
-- **CHECK** — Alignment critic (cheap Haiku call): "Does this serve the original intent?"
-- **GUARD** — Security membrane: content isolation, URL sandbox, credential isolation
-- **ACT** — Execute via motor system with human-like dynamics
-- **LEARN** — If prediction error > threshold: update world model (reconsolidation)
+- **IMAGINE** — Generate expected state. Two modes: next-state (immediate consequence of next action) and end-state (target final state, optionally a video).
+- **OBSERVE** — Dual perception: visual cortex (screenshot + Set-of-Mark) + analytical cortex (DOM/a11y/macOS AX) simultaneously.
+- **RECONCILE** — Merge both views, flag disagreements as cognitive dissonance. Collaborative, not adversarial: each channel can update the other.
+- **DIFF** — Compare imagination vs. reality; prediction error magnitude drives attention.
+- **PLAN** — Select action from affordance-aware page model (spreading activation through MWM).
+- **CHECK** — Alignment critic (cheap Haiku call): "Does this action serve the original intent?"
+- **GUARD** — Security membrane: content isolation, URL sandbox, credential isolation.
+- **ACT** — Execute via motor system with human-like dynamics.
+- **LEARN** — If prediction error exceeds threshold: update the MWM graph (reconsolidation).
 
 ### System diagram
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    MCP SERVER / CLI                       │
-│  Interface for Claude Code, n8n, or standalone use       │
+│                    MCP SERVER / CLI                      │
+│  Interface for the parent being (PD or other entity),   │
+│  Claude Code, n8n, or standalone use                    │
 └──────────────────────┬──────────────────────────────────┘
                        │
 ┌──────────────────────▼──────────────────────────────────┐
-│               IMAGINATION ENGINE (Mirror)                │
-│  "What do I expect to see?"                              │
-│  Sources: world model + task context + last action       │
-│  Output: ImaginedState (text description of expected)    │
+│               IMAGINATION ENGINE                         │
+│  "What do I expect to see?" / "What should it look      │
+│   like at the end?"                                     │
+│  Sources: MWM graph + task context + last action +      │
+│           value-aligned modulation                      │
+│  Outputs: ImaginedState (next-state) and/or             │
+│           ImaginedEndState (target / video)             │
 └──────────────────────┬──────────────────────────────────┘
                        │
 ┌──────────────────────▼──────────────────────────────────┐
-│            DUAL PERCEPTION (Trees)                       │
+│                DUAL PERCEPTION                           │
 │                                                          │
 │  VISUAL CORTEX           ANALYTICAL CORTEX               │
 │  Screenshot + SoM         DOM/a11y/macOS AX              │
 │  Layout, colors,          Structure, state,              │
 │  visual state             handlers, exact values         │
 │                                                          │
-│  ──────────── RECONCILER ────────────                    │
+│  ──────────── RECONCILER (collaborative) ────────────    │
 │  Merge → unified PageModel with confidence               │
-│  Flag disagreements as cognitive dissonance               │
+│  Disagreements = cognitive dissonance, not error         │
 │  Arbitration: visual wins for "looks right?"             │
 │               analytical wins for "is clickable?"        │
 └──────────────────────┬──────────────────────────────────┘
@@ -131,6 +186,8 @@ IMAGINE → OBSERVE → RECONCILE → DIFF → PLAN → CHECK → GUARD → ACT 
 ┌──────────────────────▼──────────────────────────────────┐
 │              PREDICTION ERROR (Diff)                     │
 │  Compare ImaginedState vs PageModel                      │
+│  (and ImaginedEndState vs current state if end-state    │
+│   mode is active — drives reverse-engineering)          │
 │  Low error → proceed (Tier 0-1 next time)               │
 │  High error → reconsolidate + escalate attention         │
 └──────────────────────┬──────────────────────────────────┘
@@ -140,13 +197,13 @@ IMAGINE → OBSERVE → RECONCILE → DIFF → PLAN → CHECK → GUARD → ACT 
 │  Elements perceived as action potentials:                │
 │  [7] button "Deploy" → affordance: TRIGGER_ACTION        │
 │  [12] input "Search" → affordance: QUERY                 │
-│  Spreading activation: goal → relevant affordances       │
+│  Spreading activation through MWM: goal → affordances    │
 └──────────────────────┬──────────────────────────────────┘
                        │
 ┌──────────────────────▼──────────────────────────────────┐
 │         ALIGNMENT CRITIC (Haiku, every action)           │
-│  "Does this action serve the user's original intent?"    │
-│  YES → proceed | CAUTION → log | NO → re-plan           │
+│  "Does this action serve the original intent?"           │
+│  YES → proceed | CAUTION → log | NO → re-plan            │
 └──────────────────────┬──────────────────────────────────┘
                        │
 ┌──────────────────────▼──────────────────────────────────┐
@@ -162,17 +219,21 @@ IMAGINE → OBSERVE → RECONCILE → DIFF → PLAN → CHECK → GUARD → ACT 
 │  Bezier curve mouse movement with Gaussian jitter        │
 │  Per-character typing with normal distribution delays    │
 │  Momentum-based scrolling                                │
-│  All via raw input events (CDP/PyAutoGUI/AppleScript)   │
+│  All via raw input events (CDP/PyAutoGUI/AppleScript)    │
 └──────────────────────┬──────────────────────────────────┘
                        │
 ┌──────────────────────▼──────────────────────────────────┐
-│              WORLD MODEL (Matrix)                        │
-│  SQLite graph of site patterns + causal edges            │
-│  Spreading activation for pattern retrieval              │
-│  Reconsolidation: updates only under prediction error    │
-│  Grows smarter with use                                  │
+│        MWM GRAPH WRITE-BACK (memory subsystem)           │
+│  Predicted states, observed states, causal edges        │
+│  Site patterns, learned affordances, error patterns     │
+│  Reconsolidation: writes only when prediction error     │
+│  exceeds threshold                                       │
+│  Read-back: imagination engine queries the graph for    │
+│  priors and expectations                                 │
 └─────────────────────────────────────────────────────────┘
 ```
+
+The world model (Matrix) lives in MWM, not inside GRP. GRP is a producer and consumer of MWM nodes/edges; it does not own the graph. This is a deliberate factoring: every subsystem in SSP that produces or consumes beliefs touches the same graph.
 
 ### Tiered perception (cost management)
 
@@ -181,20 +242,20 @@ IMAGINE → OBSERVE → RECONCILE → DIFF → PLAN → CHECK → GUARD → ACT 
 | **0 Reflex** | DOM-only check, no LLM | 0 | Waiting, confirming, checking element presence |
 | **1 Glance** | DOM + lightweight a11y (Haiku) | 500 | Familiar pages, expected states, form filling |
 | **2 Look** | Screenshot + SoM + a11y (Sonnet vision) | 2K | New page, moderate surprise |
-| **3 Study** | Full pipeline: imagination + dual perception + reconciler + affordances | 5K | First visit, high surprise, critical steps, verification |
+| **3 Study** | Full pipeline: imagination + dual perception + reconciler + affordances | 5K | First visit, high surprise, critical steps, verification, end-state imagination tasks |
 
-Imagination enables tiered perception: if you predict accurately, cheap Tier 0-1 suffices. Only surprise triggers expensive Tier 2-3. A 10-step task costs ~15K tokens instead of ~50K.
+Imagination enables tiered perception: if you predict accurately, cheap Tier 0–1 suffices. Only surprise triggers expensive Tier 2–3. A 10-step task costs ~15K tokens instead of ~50K.
 
 ### Temporal perception (video model)
 
-Beyond single screenshots, Phantom can sample frames over time to understand:
+Beyond single screenshots, GRP can sample frames over time to understand:
 - Loading sequences and progress
 - Animations and transitions
 - Dynamic state changes (real-time updates, WebSocket data)
 - Whether something is "working" vs "frozen"
 - Whether an interaction "feels right" (smooth scroll, responsive hover)
 
-Implementation: capture N frames at configurable intervals, analyze the sequence for temporal patterns.
+Implementation: capture N frames at configurable intervals, analyze the sequence for temporal patterns. Video-scale imagination uses the same temporal substrate — the imagined "video of the action sequence" is a sequence of imagined frames against which observed frames are reconciled.
 
 ---
 
@@ -205,7 +266,7 @@ Implementation: capture N frames at configurable intervals, analyze the sequence
 | Backend | Type | Use case | Cost |
 |---------|------|----------|------|
 | **Claude Vision** | Visual | Deep understanding, imagination, reconciliation | High |
-| **Lux Actor (OpenAGI)** | Visual+Action | Fast action grounding, 1sec/step | Low |
+| **Lux Actor (OpenAGI)** | Visual+Action | Fast action grounding, 1 sec/step | Low |
 | **OmniParser (Microsoft)** | Visual | Screenshot → structured elements with interactability | Medium |
 | **Playwright MCP a11y** | Structural | DOM/accessibility tree (browser) | Free |
 | **macOS Accessibility API** | Structural | Native app structure | Free |
@@ -237,11 +298,11 @@ Lux (OpenAGI) can serve as a fast perception-action backbone:
 
 ### Filesystem sandbox
 
-- Phantom writes ONLY to `~/.phantom/workspace/`
+- GRP writes ONLY to `~/.grp/workspace/`
 - Each task gets a subdirectory: `task-YYYY-MM-DD-description/`
 - Contains: screenshots, findings.md, page-model.json, causal-log.json
-- Phantom NEVER edits existing files outside its sandbox
-- Claude Code reads these files and decides what to do with them
+- GRP NEVER edits existing files outside its sandbox
+- The parent being (Claude Code, PD, or other SSP entity) reads these files and decides what to do with them
 
 ### Content isolation
 
@@ -254,7 +315,7 @@ Lux (OpenAGI) can serve as a fast perception-action backbone:
 
 - Cheap Haiku call on EVERY action before execution
 - "Does this action serve the user's original intent?"
-- No existing framework ships this — Phantom's differentiator
+- No existing framework ships this — GRP's differentiator
 
 ### HTTP-layer sandbox (ceLLMate-inspired)
 
@@ -280,7 +341,7 @@ Lux (OpenAGI) can serve as a fast perception-action backbone:
 
 ## Data Structures
 
-### ImaginedState
+### ImaginedState (next-state mode)
 
 ```typescript
 interface ImaginedState {
@@ -288,7 +349,7 @@ interface ImaginedState {
   expected_elements: ExpectedElement[];
   layout_expectations: LayoutHint[];
   confidence: number;
-  source: 'world_model' | 'task_context' | 'action_consequence' | 'url_pattern';
+  source: 'mwm_graph' | 'task_context' | 'action_consequence' | 'url_pattern';
 }
 
 interface ExpectedElement {
@@ -297,6 +358,20 @@ interface ExpectedElement {
   probable_position: 'top' | 'center' | 'bottom' | 'sidebar' | 'modal';
   affordance: string;
   confidence: number;
+}
+```
+
+### ImaginedEndState (end-state mode)
+
+```typescript
+interface ImaginedEndState {
+  target_kind: 'final_screenshot' | 'video_sequence' | 'structural_target';
+  target_screenshot?: ImageRef;     // for final-state mode
+  target_video_frames?: ImageRef[]; // for video mode
+  target_structure?: PageModel;     // for structural targets
+  intent: string;
+  confidence: number;
+  reverse_engineering_strategy: 'diff_then_codegen' | 'motor_inverse' | 'plan_search';
 }
 ```
 
@@ -349,36 +424,29 @@ interface Affordance {
   relevance_to_task: number;
   risk: 'safe' | 'caution' | 'dangerous';
   preconditions?: string[];
-  source: 'element_analysis' | 'world_model' | 'task_inference';
+  source: 'element_analysis' | 'mwm_graph' | 'task_inference';
 }
 ```
 
-### World Model (simplified Matrix)
+### MWM-side nodes/edges produced by GRP
+
+GRP does not define its own world-model schema. It writes to MWM using MWM's node/edge primitives. The shapes below describe the *content* GRP contributes; the storage layer is MWM's responsibility.
 
 ```typescript
-interface SitePatternNode {
-  id: string;
-  type: 'site_pattern' | 'page_layout' | 'element_behavior' | 'flow_step' | 'error_pattern';
-  content: string;
-  domain?: string;
-  url_pattern?: string;
-  created_at: number;
-  last_accessed: number;
-  access_count: number;
-  confidence: number;
-  source: 'observation' | 'prediction_error' | 'consolidation';
-}
+// Content GRP writes into MWM nodes
+type GRPNodeContent =
+  | { kind: 'site_pattern'; domain: string; description: string }
+  | { kind: 'page_layout'; url_pattern: string; layout: LayoutModel }
+  | { kind: 'element_behavior'; element_signature: string; behavior: string }
+  | { kind: 'flow_step'; from: string; to: string; trigger: Affordance }
+  | { kind: 'error_pattern'; trigger: string; manifestation: string };
 
-interface PatternEdge {
-  source_id: string;
-  target_id: string;
-  type: 'association' | 'causal' | 'affordance' | 'sequence';
-  weight: number;
-  action?: string;
-  expected_outcome?: string;
-  success_count: number;
-  failure_count: number;
-}
+// Edges GRP creates between MWM nodes
+type GRPEdgeKind =
+  | 'association'  // co-occurrence
+  | 'causal'       // action X led to state Y (Pearl Layer 2)
+  | 'affordance'   // element offers action
+  | 'sequence';    // step before/after another step
 ```
 
 ---
@@ -386,64 +454,63 @@ interface PatternEdge {
 ## Module Map
 
 ```
-phantom/
+perception/                          # GRP source tree (within SSP repo)
   packages/
-    core/                       # Cognitive pipeline (universal)
+    core/                            # Cognitive pipeline (universal)
       src/
-        imagination.ts          # Generate expected state before acting
+        imagination.ts               # Next-state and end-state imagination engines
+        reverse_engineer.ts          # End-state → action sequence
         perception/
-          visual.ts             # Screenshot + SoM via Claude/Lux/OmniParser
-          analytical.ts         # DOM/a11y/macOS AX extraction
-          reconciler.ts         # Merge views, handle disagreements
-          temporal.ts           # Screen sampling over time (video model)
-        affordance.ts           # Elements as action potentials
-        diff.ts                 # Imagination vs reality
-        planner.ts              # Affordance-aware action selection
-        critic.ts               # Alignment check (Haiku)
-        guard.ts                # Security membrane
-        learner.ts              # Prediction-error-gated updates
-        pipeline.ts             # Orchestrate full cycle
-        types.ts                # Shared types
+          visual.ts                  # Screenshot + SoM via Claude/Lux/OmniParser
+          analytical.ts              # DOM/a11y/macOS AX extraction
+          reconciler.ts              # Merge views, handle disagreements
+          temporal.ts                # Screen sampling over time (video model)
+        affordance.ts                # Elements as action potentials
+        diff.ts                      # Imagination vs reality
+        planner.ts                   # Affordance-aware action selection
+        critic.ts                    # Alignment check (Haiku)
+        guard.ts                     # Security membrane
+        learner.ts                   # Prediction-error-gated MWM writes
+        pipeline.ts                  # Orchestrate full cycle
+        types.ts                     # Shared types
 
-    world-model/                # The Matrix (simplified)
+    mwm-bridge/                      # Connect to MWM (separate repo)
       src/
-        store.ts                # SQLite graph
-        nodes.ts                # SitePattern, PageLayout, ElementBehavior
-        edges.ts                # Association, causal, affordance edges
-        query.ts                # Spreading activation traversal
-        update.ts               # Reconsolidation logic
+        write.ts                     # Write GRP nodes/edges into MWM
+        read.ts                      # Read priors / expectations from MWM
+        spreading.ts                 # In-page spreading activation via MWM
 
-    adapters/                   # Pluggable per-environment
-      browser/                  # Browser adapter (MVP)
-        playwright.ts           # Playwright/Patchright
-        stealth.ts              # Camoufox/nodriver
-        dom-perception.ts       # A11y tree extraction
-      desktop/                  # Desktop adapter (future)
+    adapters/                        # Pluggable per-environment
+      browser/                       # Browser adapter (MVP)
+        playwright.ts                # Playwright/Patchright
+        stealth.ts                   # Camoufox/nodriver
+        dom-perception.ts            # A11y tree extraction
+      desktop/                       # Desktop adapter (future)
         macos-ax.ts
         applescript.ts
-      screen/                   # Any-window adapter (future)
+      screen/                        # Any-window adapter (future)
         screenshot.ts
         pyautogui.ts
-      lux/                      # Lux (OpenAGI) adapter
-        provider.ts             # ScreenshotProvider for Lux API
-        handler.ts              # ActionHandler from Lux output
+      lux/                           # Lux (OpenAGI) adapter
+        provider.ts                  # ScreenshotProvider for Lux API
+        handler.ts                   # ActionHandler from Lux output
 
-    interface/                  # How other tools connect
-      mcp-server/               # MCP server for Claude Code
+    interface/                       # How other tools connect
+      mcp-server/                    # MCP server for Claude Code / PD
         server.ts
         tools.ts
         resources.ts
-      cli/                      # Standalone CLI
+      cli/                           # Standalone CLI
         index.ts
-      sandbox/                  # Filesystem sandbox
-        workspace.ts            # Manages ~/.phantom/workspace/
-        policy.ts               # Write permissions
+      sandbox/                       # Filesystem sandbox
+        workspace.ts                 # Manages ~/.grp/workspace/
+        policy.ts                    # Write permissions
 
-    motor/                      # Human-like input system
+    motor/                           # Human-like input system
       src/
-        mouse.ts                # Bezier curves + Gaussian jitter
-        keyboard.ts             # Per-char normal distribution delays
-        scroll.ts               # Momentum-based scrolling
+        mouse.ts                     # Bezier curves + Gaussian jitter
+        keyboard.ts                  # Per-char normal distribution delays
+        scroll.ts                    # Momentum-based scrolling
 ```
 
 ---
@@ -459,46 +526,56 @@ phantom/
 
 ### Phase 2: Seeing Double
 - Add analytical cortex (a11y tree)
-- Build reconciler (merge + disagreement detection)
+- Build reconciler (merge + disagreement detection, collaborative arbitration)
 - Add affordance layer
 - Tiered perception (Tier 0-2)
 
-### Phase 3: Dreaming
-- Imagination engine (LLM-simulated expected state)
+### Phase 3: Dreaming (next-state)
+- Next-state imagination engine
 - Prediction error computation
-- World model (SQLite graph)
-- Learning loop (reconsolidation)
+- MWM bridge (read priors, write reconsolidations)
+- Learning loop (reconsolidation under surprise)
 - Full Tier 0-3 perception
 
-### Phase 4: Feeling
-- Temporal perception (screen sampling, video model)
+### Phase 4: Imagining the End
+- End-state imagination (single-frame and video)
+- Reverse-engineering: end-state → action sequence
+- Web-design and code-from-vision pipelines
+- Robotic motor-inverse pipeline (if motor backend available)
+
+### Phase 5: Feeling
+- Temporal perception (screen sampling, video model) integrated with imagination
 - Stealth mode (Patchright/Camoufox)
 - Motor system (Bezier mouse, Gaussian typing)
 - Lux integration as fast perception backend
 
-### Phase 5: Speaking
+### Phase 6: Speaking
 - Alignment critic
 - Full security membrane
 - Credential vault
 - CLI tool
 - Desktop adapter (macOS)
 
+End-state imagination (Phase 4) is intentionally introduced *after* the next-state loop is working, because the reverse-engineering pipeline depends on having a stable IMAGINE → OBSERVE → RECONCILE substrate to verify against.
+
 ---
 
 ## Novel Contributions (vs. literature)
 
-Based on 8 research agents, ~65 papers, ~80 repos surveyed (2026-03-31):
+Based on 8 research agents, ~65 papers, ~80 repos surveyed (2026-03-31). The 2026-04-22 sharpening adds two further contributions: end-state imagination with reverse-engineering, and the Generative Collaborative reframe.
 
 | Contribution | Status in literature |
 |---|---|
-| Dual perception reconciler with principled disagreement handling | **Unpublished** — no paper or project does this |
-| In-page spreading activation for element attention | **Unpublished** — all spreading activation work is document-level |
-| Active inference framing for web navigation | **Completely unoccupied** in browser agent literature |
-| Online causal graph building during live browsing | **Unpublished** — existing work is offline/simulation |
-| Prediction-error-gated tiered perception (Kahneman dual-process for cost) | **Novel application** to browser agents |
-| Associative Memory Three Planes applied to browser navigation | **Novel cross-pollination** |
-| Alignment critic on every action | **Not shipped** by any existing framework |
-| Temporal perception / video model for browser state | **Emerging** but not integrated with world models |
+| **End-state imagination with reverse-engineering to action** | Unpublished as a unified mechanism — pieces exist (image-to-code; video prediction) but not as a perception-action loop |
+| **Generative Collaborative reframe of GAN-style architectures** | Novel framing — collaboration over adversarial dynamics in generation |
+| Dual perception reconciler with principled disagreement handling | Unpublished — no paper or project does this |
+| In-page spreading activation for element attention | Unpublished — all spreading activation work is document-level |
+| Active inference framing for web navigation | Completely unoccupied in browser agent literature |
+| Online causal graph building during live browsing | Unpublished — existing work is offline/simulation |
+| Prediction-error-gated tiered perception (Kahneman dual-process for cost) | Novel application to browser agents |
+| MWM Three-Plane substrate applied to perception | Novel cross-pollination |
+| Alignment critic on every action | Not shipped by any existing framework |
+| Temporal perception / video model for browser state | Emerging but not integrated with world models |
 
 ---
 
@@ -552,9 +629,12 @@ Based on 8 research agents, ~65 papers, ~80 repos surveyed (2026-03-31):
 
 ---
 
-## Related Projects (Playful Sincerity)
+## Related Projects (within Playful Sincerity)
 
-- **Associative Memory** — the theoretical foundation (Three Planes, spreading activation, reconsolidation)
-- **The Companion** — may eventually use Phantom as its visual perception layer
-- **Spatial Workspace** — could visualize Phantom's world model as a 2D graph
-- **Digital Core** — Phantom will be an MCP server accessible from Claude Code
+- **The Synthetic Sentiences Project** — the umbrella program GRP belongs to. SSP's CLAUDE.md surveys the nine subsystems and the alignment-through-architecture thesis.
+- **Memory as World Model (MWM)** — the memory subsystem GRP writes into and reads from. Sister repo, four-month Anthropic Fellows 2026 target.
+- **Cognition / Values / Mirror / Trees / Action / Cycles / Voice** — the other SSP subsystems GRP integrates with (see Integration with Other SSP Subsystems above).
+- **Gravitationalism** — alignment foundation; informs the collaborative-over-adversarial reframe.
+- **PSSO** — philosophical roots; Earned Conviction and Emotivation pillars.
+- **Spatial Workspace** — could visualize GRP's contributions to MWM as a 2D graph view.
+- **Claude Code Entities (PD)** — the operational entity that will eventually dispatch GRP as a perception scout.
