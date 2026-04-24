@@ -83,10 +83,10 @@ The agent survey's counter-argument (integration is the thesis → one repo) is 
 1. Rename `PS Research/Associative Memory/` → `PS Research/MWM/`
 2. Initialize MWM as its own git repo (`git init` + initial commit)
 3. Write a public-facing `README.md` for MWM (distinct from existing CLAUDE.md; mirrors style of SSP README)
-4. Create `github.com/Playful-Sincerity/MWM` as public; push
+4. Create `github.com/Playful-Sincerity/Memory-as-World-Model` as public; push
 5. Update `SSP/memory/CLAUDE.md` to:
    - Describe how memory fits into SSP (graph is world model; LLM is traversal engine)
-   - Link out to `github.com/Playful-Sincerity/MWM` for the focused project
+   - Link out to `github.com/Playful-Sincerity/Memory-as-World-Model` for the focused project
 6. Update SSP root `README.md` and `CLAUDE.md` to reference MWM as the memory project (sibling repo)
 7. Update Fellows Q12 links:
    - Primary: MWM repo URL

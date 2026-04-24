@@ -47,7 +47,7 @@ Each subsystem is a self-contained research strand with its own CLAUDE.md, chron
 
 | Subsystem | Folder | Studies |
 |-----------|--------|---------|
-| Interpretable Memory (MWM) — sibling repo | [github.com/Playful-Sincerity/MWM](https://github.com/Playful-Sincerity/MWM) · [local memory/](memory/) | The graph as interpretable world model (Matrix). 4-month Fellows 2026 research target. |
+| Interpretable Memory (MWM) — sibling repo | [github.com/Playful-Sincerity/Memory-as-World-Model](https://github.com/Playful-Sincerity/Memory-as-World-Model) · [local memory/](memory/) | The graph as interpretable world model (Matrix). 4-month Fellows 2026 research target. |
 | Graph Traversal / Trees | [trees/](trees/) | Working memory, spreading activation, context as growing/shrinking tree (Trees) |
 | Mirror Architecture | [mirror/](mirror/) | Multi-session single-mirror, identity persistence, letters-to-future-selves (Mirror) |
 

@@ -35,7 +35,7 @@ Organized into four functional tiers:
 
 | Tier | Subsystem | Studies |
 |------|-----------|---------|
-| Spatial | [Interpretable Memory — MWM (sibling repo)](https://github.com/Playful-Sincerity/MWM) | The graph as interpretable world model. 4-month Fellows 2026 target. See [memory/](memory/) for how it fits into SSP. |
+| Spatial | [Interpretable Memory — MWM (sibling repo)](https://github.com/Playful-Sincerity/Memory-as-World-Model) | The graph as interpretable world model. 4-month Fellows 2026 target. See [memory/](memory/) for how it fits into SSP. |
 | Spatial | [Graph Traversal / Trees](trees/) | Working memory, spreading activation, context as growing / shrinking tree |
 | Spatial | [Mirror Architecture](mirror/) | Multi-session single-mirror, identity persistence, letters-to-future-selves |
 | Dynamics | [Earned Conviction](cognition/) | Belief graphs, evidence chains, cognitive dissonance, curiosity-as-gaps |
