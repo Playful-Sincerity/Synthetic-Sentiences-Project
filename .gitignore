@@ -7,3 +7,7 @@ __pycache__/
 *.pyc
 node_modules/
 archive/_companion-legacy-git-backup/
+
+# Session briefs are local-only working files
+session-briefs/
+**/session-briefs/
