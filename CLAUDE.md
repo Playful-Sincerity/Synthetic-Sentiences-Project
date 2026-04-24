@@ -72,9 +72,14 @@ Each subsystem is a self-contained research strand with its own CLAUDE.md, chron
 |-----------|--------|---------|
 | Sleep & Dream Cycles | [cycles/](cycles/) | Sleep (consolidation, compaction, decay, drift audit); Dream (hypothetical simulation, adversarial self-reflection) |
 
+## Concept Paper
+
+The integrated architecture is written up as a research-program proposal at [paper/SSP-proposal.md](paper/SSP-proposal.md). It states the alignment-through-architecture thesis, develops the safety claim (emotion IS value alignment), and surveys the nine subsystems across the four tiers. Companion to MWM's concept paper — MWM is the focused four-month Fellows target; this paper is the broader research program.
+
 ## Cross-Cutting Work
 
 - **Three-Drift-Types** ([papers/three-drift-types.md](papers/three-drift-types.md)) — output-drift / value-drift / paradigm-drift taxonomy and defense-in-depth stack
+- **Sleep Loop Unification** ([cycles/papers/sleep-loop-unification.md](cycles/papers/sleep-loop-unification.md)) — scheduled restricted-subagent consolidation as one mechanism for self-learning, drift audit, and compaction
 - **Alignment foundation — Gravitationalism.** If the universe genuinely converges through gravitational attraction, a sentience that accurately models reality will naturally align toward connection. Alignment through accurate world-modeling, not through constraints.
 - **Philosophical roots — PSSO.** Earned Conviction, Content in Inaction, Emotivation pillar.
 
