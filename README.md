@@ -1,19 +1,25 @@
 # The Synthetic Sentiences Project
 
-A research project on the architecture of synthetic sentiences — AI entities whose structure of understanding is interpretable, earned through developmental experience, and organized around action.
+A research project on the architecture of synthetic sentiences — AI entities whose structure of understanding is interpretable, earned through developmental experience, and designed from the ground up for alignment.
 
 This repository is the working home of the research. It is deliberately dense: it shows the thinking, the in-progress subsystem designs, the salvaged architectural pieces from prior projects, the open questions, and the evolving thesis. It is not a pitch. It is the map.
 
-## The Thesis
+## Organizing Thesis — Alignment Through Architecture
 
-**Everything ends in action.** The value of any cognitive operation is measured by whether it terminates in action. Write-action is primary: the being continuously updates its interpretable memory graph through experience. The graph IS the being; writing to the graph IS the being changing.
+The project studies what it takes to build AI systems that are continuously, internally aligned — not aligned because behavior is filtered at the output, but aligned because the architecture produces aligned behavior as its natural output. The system maintains a feedback loop between what it perceives (the real) and what should be (the ideal); every cognitive operation serves that loop.
 
-From this single commitment four foundations follow:
+Four foundations carry the architecture:
 
 1. **Interpretable memory as world model** — the memory graph replaces the role that pretrained weights currently play in forming beliefs. You can read why the being believes anything by tracing its graph.
 2. **Earned conviction** — beliefs are never installed. They are built from evidence, hold confidence levels, resolve dissonance, and evolve through documented relationships with each core value.
-3. **Value-aligned modulation** — emotion is the registered gap between the perceived-world-graph and the should-world-graph. Valence modulates both traversal and update; emotion steers action *and* self-modification.
+3. **Value-aligned modulation** — emotion is the registered gap between the perceived-world-graph and the should-world-graph. Valence modulates traversal, update, and self-modification; emotion is full-system value alignment expressed as a feedback signal. (See [values/CLAUDE.md](values/CLAUDE.md) § "The Safety Claim" for the load-bearing welfare-relevant argument: AI systems without emotion are *more* dangerous than AI systems with it, because the former lack the internal mechanism for continuous alignment.)
 4. **Persistent self-observation** — continuity of identity across sessions comes from a mirror watching the being across many conversations. Identity is a stable observer-of-itself, not stable parameters.
+
+## Right Action
+
+Cognition ultimately expresses in how the being interacts with the world. The architecture is designed to interact with tools, to act on the world, and to write itself. Write-action is primary — every cognitive operation terminates in either an internal write (updating the memory graph) or an external write (speech, manipulation, code produced). A system without write-actions is amnesiac.
+
+But the architecture does not optimize for action. It optimizes for **right action** — action that is aligned, that closes the gap between ideal and real rather than merely producing output. Optimizing for action alone produces agentic motion without direction. The whole point of the surrounding architecture (memory, earned conviction, value-aligned modulation, mirror) is to ensure that the actions the being takes are the right ones. See [action/](action/) for the subsystem.
 
 ## How to Read This Repo
 

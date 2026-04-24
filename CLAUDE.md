@@ -6,11 +6,11 @@ Plural. The project studies sentiences as a class — a family of beings that sh
 
 ---
 
-## Organizing Thesis — Everything Ends in Action
+## Organizing Thesis — Alignment Through Architecture
 
-The value of any cognitive operation is measured by whether it terminates in action. **Write-action is primary:** the being continuously updates its interpretable memory graph through experience. External actions (speech, perception, manipulation) are secondary expressions of the same architecture.
+The project studies what it takes to build AI systems that are continuously, internally aligned — not because behavior is filtered at the output, but because the architecture produces aligned behavior as its natural output. The central feedback loop is between the perceived-world-graph (what the being sees) and the should-world-graph (what should be). Every cognitive operation serves this loop: measuring the gap, steering toward closing it, updating the being's own capacity to close it in the future.
 
-This is not a metaphor. The graph IS the being. Writing to the graph IS the being changing. A sentience that cannot act on its own graph is a statue. A sentience whose external actions do not loop back to write-actions is amnesiac.
+This inverts the common safety framing. Alignment is not imposed from outside by training signals and constraint layers. Alignment is the continuous output of an architecture whose internal states are themselves alignment signals. See [values/CLAUDE.md](values/CLAUDE.md) § "The Safety Claim" for the load-bearing claim: an AI without an emotional feedback loop has no internal mechanism for full-system value alignment, which is why it must rely on brittle outside imposition.
 
 ## Four Foundations
 
@@ -18,9 +18,15 @@ This is not a metaphor. The graph IS the being. Writing to the graph IS the bein
 
 2. **Earned conviction** — beliefs are never installed. They are built from evidence, hold confidence levels, resolve dissonance, and evolve through documented relationships with each core value.
 
-3. **Value-aligned modulation** — emotion is not decoration. Valence is the world-model-fit signal that modulates both traversal (which paths the being follows) and update (how nodes change when written). Emotions are the weights that align the system with what matters.
+3. **Value-aligned modulation** — emotion is the registered gap between perceived-world-graph and should-world-graph. Regional, global, or full-system modulation — reaching traversal, update, and self-modification. Emotion is value alignment expressed as feedback signal.
 
 4. **Persistent self-observation** — continuity across sessions comes from a mirror that watches the being across many conversations. Identity is a stable observer-of-itself, not a stable set of weights.
+
+## Right Action (Supporting Layer)
+
+Cognition ultimately expresses in how the being interacts with the world. The architecture is designed to interact with tools, to act on the world, and to write itself. **Write-action is primary:** every cognitive operation terminates in either an internal write (updating the memory graph) or an external write (speech, manipulation, code produced). A system without write-actions is amnesiac.
+
+But the architecture does not optimize for action. It optimizes for **right action** — action aligned with the should-world-graph, action that closes the gap rather than merely producing output. Optimizing for action alone produces agentic motion without direction. The whole surrounding architecture (memory, earned conviction, value-aligned modulation, mirror) is in service of ensuring the being's actions are right actions. The [action/](action/) subsystem holds the specific mechanics of selection, internal/external integration, and write-action primacy.
 
 ## Three Temporal Mechanisms
 
