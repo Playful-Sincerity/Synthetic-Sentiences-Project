@@ -11,3 +11,7 @@ archive/_companion-legacy-git-backup/
 # Session briefs are local-only working files
 session-briefs/
 **/session-briefs/
+
+# Process artifacts — local-only working files
+decisions/
+_reorganization-plan.md
