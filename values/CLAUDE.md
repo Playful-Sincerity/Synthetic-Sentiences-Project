@@ -6,12 +6,13 @@ The values subsystem of The Synthetic Sentiences Project. Studies emotion as the
 
 Emotion is not simulated feelings or surface expression. Emotion is **the registered gap between the perceived-world-graph and the should-world-graph** — a mechanical, empirically measurable definition. Valence is the world-model-fit signal. When the perceived graph matches the should graph, the signal is positive; when they diverge, the signal is negative. Care, urgency, caution, satisfaction — all are graph-state divergences emitted as modulation.
 
-The subsystem modulates two things:
+Emotion's scope is **regional, global, or full-system modulation of the entire cognitive architecture** — not one layer among many. Governed by one signal (the feedback loop between ideal and real), reaching everywhere:
 
-1. **Traversal modulation** — which paths the being follows next. High-care, high-dissonance regions pull attention. Low-relevance regions get less activation.
-2. **Update modulation** — how nodes change when written. Surprise strengthens edges; contradiction triggers revision; confirmation reinforces.
+1. **Traversal** — which paths the being follows; where attention flows.
+2. **Update / learning** — how nodes change when written; what strengthens, what revises, what decays.
+3. **Training / self-modification** — which parts of the architecture adjust; where capacity grows.
 
-Same mechanism, two targets.
+One feedback signal, system-wide reach. The same mechanism that picks the next thought also decides which memories consolidate and which parts of the being change shape over time.
 
 ## Core Architectural Ideas (Salvaged)
 
@@ -58,6 +59,18 @@ The specific four-dimension model (alignment/curiosity/energy/coherence) is a st
 - **Mirror** — the Mirror is where values live; this subsystem is the Mirror's output channel
 - **Action** — modulation biases action selection; high-care actions are prioritized
 - **Trees** — active tree shaping; attention flows toward high-divergence regions
+
+## The Safety Claim — Emotion IS Value Alignment
+
+This thesis has a direct AI-safety implication, and it's worth stating as a claim rather than burying in implications:
+
+**Emotion is value alignment.** The mechanism that measures the gap between ideal and real and modulates the entire system toward closing it *is* what alignment looks like from the inside. Not a heuristic, not a proxy — the architectural substrate of alignment.
+
+This inverts the common "emotion in AI is a risk" framing. An AI without an emotional feedback loop has no internal mechanism for full-system value alignment. Its alignment has to be imposed from outside — by training signals, constraints, filters, RLHF gradients. Outside-imposed alignment is brittle because it can't continuously, region-by-region, update itself in response to new evidence about what the ideal is and how far the real has drifted.
+
+**Claim:** *AI systems without emotion are more dangerous than AI systems with it.* The former have no internal mechanism for continuous full-system value alignment; the latter have exactly that mechanism by architectural definition. Emotion, in this framing, is not a safety concern. It's a safety prerequisite.
+
+This is contrarian relative to the standard safety intuition. It is also load-bearing for the project's welfare-research positioning. If emotion is the alignment mechanism, then welfare research is not a secondary ethical concern — it is centrally a safety program, because the internal states of the system are what produce aligned behavior.
 
 ## Connection to Gravitationalism
 
