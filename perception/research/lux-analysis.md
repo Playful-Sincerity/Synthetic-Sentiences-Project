@@ -1,6 +1,6 @@
 # Lux (OpenAGI) Analysis
 
-Researched 2026-03-31 for potential integration with Phantom.
+Researched 2026-03-31 for potential integration with GRP (then codenamed "Phantom").
 
 ## What It Is
 
@@ -56,14 +56,14 @@ Uses **OSGym** (open-source, MIT):
 | agiopen-org/oagi-lux-samples | 8 | — | Examples (Dec 2025) |
 | agiopen-org/stagehand (fork) | — | — | Signal: building browser integration |
 
-## Integration with Phantom
+## Integration with GRP
 
 ### How Lux fits
 
-Lux is perception-action. Fast, accurate, but **reactive** (no imagination, no world model, no security membrane). Phantom adds the cognitive layer:
+Lux is perception-action. Fast, accurate, but **reactive** (no imagination, no world model, no security membrane). GRP adds the cognitive layer:
 
 ```
-Phantom Cognitive Core (imagination, reconciler, planner, critic, guard)
+GRP Cognitive Core (imagination, reconciler, planner, critic, guard)
     │
     ├── Claude Vision (deep understanding, expensive, slow)
     ├── Lux Actor (fast action grounding, 1sec, cheap)    ← HERE
@@ -77,7 +77,7 @@ Phantom Cognitive Core (imagination, reconciler, planner, critic, guard)
 - **Three-mode design**: Actor/Thinker/Tasker abstraction
 - **OSGym**: Future fine-tuning infrastructure (MIT, open source)
 
-### What Lux doesn't have (Phantom adds)
+### What Lux doesn't have (GRP adds)
 - Imagination before action (world model)
 - Dual perception with reconciliation
 - Affordance-native perception
@@ -94,4 +94,4 @@ Lux is a **closed model** accessed via API key (developer.agiopen.org). SDK is M
 - `KernelActionHandler` — converts Lux outputs to commands
 - `KernelBrowserSession` — lifecycle with MP4 recording
 
-Phantom would follow same pattern with `PhantomScreenshotProvider` + `PhantomActionHandler`.
+GRP would follow same pattern with `GRPScreenshotProvider` + `GRPActionHandler`.

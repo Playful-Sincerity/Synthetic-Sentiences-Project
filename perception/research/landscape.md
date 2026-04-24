@@ -34,7 +34,7 @@ Surveyed 2026-03-31. 8 research agents, ~80 repos analyzed.
 
 These are verified unoccupied territories based on literature survey + GitHub scout:
 
-| Gap | Evidence | Phantom's Answer |
+| Gap | Evidence | GRP's Answer |
 |-----|----------|-----------------|
 | **Internal world model** | No OSS browser agent implements prediction before action | Imagination engine (WebDreamer-style, LLM as world model) |
 | **Dual perception reconciler** | No paper has principled disagreement resolution | Reconciler treats disagreements as cognitive dissonance |

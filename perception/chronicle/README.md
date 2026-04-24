@@ -1,6 +1,6 @@
 # Chronicle
 
-Semantic evolution log for Phantom. Daily append-only files tracking decisions, discoveries, and development reasoning.
+Semantic evolution log for GRP (Generative Reconciliation Perception), the perception subsystem of The Synthetic Sentiences Project. Daily append-only files tracking decisions, discoveries, and development reasoning. Entries from before 2026-04-22 use the prior codename "Phantom" — preserved as captured.
 
 ## Format
 

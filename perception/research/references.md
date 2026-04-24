@@ -1,6 +1,6 @@
 # Research References
 
-Papers and repos surveyed during the Phantom architecture research sprint (2026-03-31).
+Papers and repos surveyed during the GRP architecture research sprint (2026-03-31, when the project was codenamed "Phantom").
 8 parallel research agents, ~65 papers, ~80 repos.
 
 ## World Models for Browser Agents
