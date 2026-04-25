@@ -1,6 +1,6 @@
 # GRP — Generative Reconciliation Perception
 
-**The perception subsystem of [The Synthetic Sentiences Project](https://github.com/Playful-Sincerity/Synthetic-Sentiences-Project).**
+**The perception subsystem of [The Synthetic Sentiences Project](https://github.com/Playful-Sincerity/SSP-Synthetic-Sentiences-Project).**
 
 A cognitive architecture for AI agents that see, imagine, and inhabit digital environments. Perception is generative-first: the being imagines expected state, observes the world, and reconciles the two. Prediction error is the primary learning and attention signal.
 

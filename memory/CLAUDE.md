@@ -2,7 +2,7 @@
 
 The memory subsystem of The Synthetic Sentiences Project. The full project lives in its own repo as the 4-month Anthropic Fellows 2026 research target:
 
-**Project home:** [github.com/Playful-Sincerity/Memory-as-World-Model](https://github.com/Playful-Sincerity/Memory-as-World-Model)
+**Project home:** [github.com/Playful-Sincerity/MWM-Memory-as-World-Model](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model)
 **Local path:** `~/Playful Sincerity/PS Research/MWM/` (sibling to this folder)
 
 ## Why a sibling repo, not a subfolder here
@@ -13,7 +13,7 @@ MWM is the focused 4-month research target for the Anthropic Fellows 2026 applic
 
 The memory structure IS the interpretable world model, replacing the role that pretrained weights currently play in forming beliefs. The LLM becomes a traversal and reading engine; the graph is the mind. You can read why the agent believes anything by tracing a path in the graph, not by training a probe against the weights.
 
-Full thesis + Three Planes (Matrix / Trees / Mirror) architecture lives in [MWM's CLAUDE.md](https://github.com/Playful-Sincerity/Memory-as-World-Model/blob/main/CLAUDE.md) and [MWM's vision.md](https://github.com/Playful-Sincerity/Memory-as-World-Model/blob/main/vision.md).
+Full thesis + Three Planes (Matrix / Trees / Mirror) architecture lives in [MWM's CLAUDE.md](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model/blob/main/CLAUDE.md) and [MWM's vision.md](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model/blob/main/vision.md).
 
 ## How MWM fits into SSP
 
@@ -32,9 +32,9 @@ MWM is the substrate; SSP is the program that shows how that substrate supports 
 
 ## Key Files (in MWM repo)
 
-- [MWM/vision.md](https://github.com/Playful-Sincerity/Memory-as-World-Model/blob/main/vision.md) — thesis
-- [MWM/design/](https://github.com/Playful-Sincerity/Memory-as-World-Model/tree/main/design) — architecture, data model, traversal, value-system, etc.
-- [MWM/research/](https://github.com/Playful-Sincerity/Memory-as-World-Model/tree/main/research) — audits, multi-round research streams, local-cognition feasibility
+- [MWM/vision.md](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model/blob/main/vision.md) — thesis
+- [MWM/design/](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model/tree/main/design) — architecture, data model, traversal, value-system, etc.
+- [MWM/research/](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model/tree/main/research) — audits, multi-round research streams, local-cognition feasibility
 
 ## Status
 

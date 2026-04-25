@@ -311,5 +311,5 @@ The references below are the load-bearing prior work cited in this paper. The fu
 **Generative adversarial frameworks.** Goodfellow et al., *Generative Adversarial Nets* (NeurIPS 2014). The literature that follows is too large to enumerate here; what matters for this paper is the framing the GAN tradition established and that GRP rejects for its perception layer.
 
 **Sibling project papers.**
-- Memory as World Model (MWM): the memory subsystem of the Synthetic Sentiences Project, treated in [github.com/Playful-Sincerity/Memory-as-World-Model](https://github.com/Playful-Sincerity/Memory-as-World-Model). MWM specifies the graph that GRP writes into.
-- The Synthetic Sentiences Project: the broader research program. See [github.com/Playful-Sincerity/Synthetic-Sentiences-Project](https://github.com/Playful-Sincerity/Synthetic-Sentiences-Project).
+- Memory as World Model (MWM): the memory subsystem of the Synthetic Sentiences Project, treated in [github.com/Playful-Sincerity/MWM-Memory-as-World-Model](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model). MWM specifies the graph that GRP writes into.
+- The Synthetic Sentiences Project: the broader research program. See [github.com/Playful-Sincerity/SSP-Synthetic-Sentiences-Project](https://github.com/Playful-Sincerity/SSP-Synthetic-Sentiences-Project).

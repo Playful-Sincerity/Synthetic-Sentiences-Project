@@ -11,7 +11,7 @@ Wisdom's framing (2026-04-24 convo with Dennis):
 
 ## Context (for cold-start)
 
-- **MWM** = Memory as World Model. Sibling repo at github.com/Playful-Sincerity/Memory-as-World-Model. Memory subsystem of the Synthetic Sentiences Project. Claim: **the graph IS the interpretable world model** — nodes are beliefs, edges are evidence chains and relationships. 4-month Fellows 2026 research target.
+- **MWM** = Memory as World Model. Sibling repo at github.com/Playful-Sincerity/MWM-Memory-as-World-Model. Memory subsystem of the Synthetic Sentiences Project. Claim: **the graph IS the interpretable world model** — nodes are beliefs, edges are evidence chains and relationships. 4-month Fellows 2026 research target.
 - **Wolfram Language** is fundamentally a term-rewriting system on symbolic expressions, with native pattern-matching and 100+ graph primitives. `FindShortestPath`, `GraphCommunities`, `ConnectedComponents`, `FindSubgraphIsomorphisms`, `NeighborhoodGraph`. Wolfram's Physics Project generalizes the same paradigm to arbitrary hypergraphs.
 - **The observation from Wisdom's Wolfram overlap analysis** (see `~/Wisdom Personal/people/stephen-wolfram/research/2026-04-24-overlap.md`): SSP's architecture is a point-for-point match to Wolfram's observer definition. MWM's graph is structurally what Wolfram Language is optimized to operate on. Zhuravlev's March 2026 paper (arXiv:2603.09067) formalizes this from the information-geometry side.
 - **Dennis Hansen context:** Dennis knows Wolfram Language, is building Artifact (computational whiteboard, propagator networks), and is an active collaborator. He's the natural person to consult on implementation patterns. See `~/Wisdom Personal/people/dennis-hansen/profile.md`.

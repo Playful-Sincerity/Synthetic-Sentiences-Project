@@ -473,6 +473,6 @@ Annotated where the citation is load-bearing. Full bibliographic detail and the 
 
 ---
 
-*Correspondence:* wisdomhappy@playfulsincerity.org · [github.com/Playful-Sincerity/Synthetic-Sentiences-Project](https://github.com/Playful-Sincerity/Synthetic-Sentiences-Project)
+*Correspondence:* wisdomhappy@playfulsincerity.org · [github.com/Playful-Sincerity/SSP-Synthetic-Sentiences-Project](https://github.com/Playful-Sincerity/SSP-Synthetic-Sentiences-Project)
 
-*This paper is a concept proposal for the integrated architecture. The companion paper, [Memory as World Model](https://github.com/Playful-Sincerity/Memory-as-World-Model), specifies the four-month Anthropic Fellows 2026 implementation target — the focused subsystem within this broader research program. Subsystem-level papers and a cross-model evaluation framework follow the implementation work.*
+*This paper is a concept proposal for the integrated architecture. The companion paper, [Memory as World Model](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model), specifies the four-month Anthropic Fellows 2026 implementation target — the focused subsystem within this broader research program. Subsystem-level papers and a cross-model evaluation framework follow the implementation work.*

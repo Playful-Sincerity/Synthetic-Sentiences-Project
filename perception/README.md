@@ -2,7 +2,7 @@
 
 **A cognitive architecture for AI agents that see, imagine, and inhabit digital environments.**
 
-GRP is the perception subsystem of [The Synthetic Sentiences Project](https://github.com/Playful-Sincerity/Synthetic-Sentiences-Project). It goes out, sees a window — browser, desktop application, any screen — interacts with it, and reports back through the being's memory graph. It is not a script that pokes at a DOM. It is a small mind that inhabits a screen.
+GRP is the perception subsystem of [The Synthetic Sentiences Project](https://github.com/Playful-Sincerity/SSP-Synthetic-Sentiences-Project). It goes out, sees a window — browser, desktop application, any screen — interacts with it, and reports back through the being's memory graph. It is not a script that pokes at a DOM. It is a small mind that inhabits a screen.
 
 ## Core Thesis
 
@@ -68,7 +68,7 @@ The full architecture is specified in [SPEC.md](SPEC.md). Briefly:
 - **Security membrane** enforces content isolation, HTTP-layer sandboxing, and credential isolation.
 - **Motor system** produces human-like input dynamics.
 
-The world model itself lives in [MWM (Memory as World Model)](https://github.com/Playful-Sincerity/Memory-as-World-Model), the sibling memory subsystem. GRP is a producer and consumer of MWM nodes/edges; it does not own the graph.
+The world model itself lives in [MWM (Memory as World Model)](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model), the sibling memory subsystem. GRP is a producer and consumer of MWM nodes/edges; it does not own the graph.
 
 ## Tiered Perception (cost management)
 
@@ -121,7 +121,7 @@ Research and architecture complete. SPEC.md is authoritative. Implementation not
 
 ## Part of The Synthetic Sentiences Project
 
-GRP is one of nine subsystems in [SSP](https://github.com/Playful-Sincerity/Synthetic-Sentiences-Project). The others — interpretable memory ([MWM](https://github.com/Playful-Sincerity/Memory-as-World-Model)), earned conviction, value-aligned modulation, persistent self-observation (Mirror), graph traversal (Trees), action, sleep & dream cycles, and epistemic prosody (Voice) — build on, modulate, or consume what GRP produces. GRP is the seeing arm of a being whose memory and values are the substrate it perceives into.
+GRP is one of nine subsystems in [SSP](https://github.com/Playful-Sincerity/SSP-Synthetic-Sentiences-Project). The others — interpretable memory ([MWM](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model)), earned conviction, value-aligned modulation, persistent self-observation (Mirror), graph traversal (Trees), action, sleep & dream cycles, and epistemic prosody (Voice) — build on, modulate, or consume what GRP produces. GRP is the seeing arm of a being whose memory and values are the substrate it perceives into.
 
 ## Playful Sincerity Research
 
