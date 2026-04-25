@@ -1,0 +1,1099 @@
+% Generative Reconciliation Perception
+% Wisdom Happy
+% 2026
+
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{principle}{Principle}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% GRP notation shortcuts
+\newcommand{\grp}{\textsc{grp}}
+\newcommand{\imag}{\mathcal{I}}                  % imagined state
+\newcommand{\obs}{\mathcal{O}}                   % observed state
+\newcommand{\rec}{\mathcal{R}}                   % reconciler output
+\newcommand{\err}{\Delta}                        % prediction error
+
+\title{Generative Reconciliation Perception: \\
+A Predictive-Imagination Architecture \\
+for Computer-Use Cognition}
+
+\author{Wisdom Happy\thanks{Correspondence: wisdomhappy@playfulsincerity.org. \\[0.5em]
+\textit{Methodology:} The architecture described in this paper was originally
+conceived during a research sprint on March 31, 2026, under the codename
+\emph{Phantom}, and developed through April 2026 using the Playful
+Sincerity Digital Core---an AI-assisted research methodology system built on
+Claude Code (Anthropic). The Digital Core orchestrates structured research,
+hierarchical planning, and parallel agent-based exploration. Eight parallel
+research agents surveyed approximately 65 academic papers and 80 GitHub
+repositories to validate the originality of the architecture's claimed
+contributions; results are catalogued in
+\texttt{research/landscape.md} and \texttt{research/references.md} in the
+project repository. The codename was changed to \grp{} (Generative Reconciliation Perception) on April~22, 2026, to name the actual mechanism rather than a stealth side property,
+alongside a sharpening that introduced end-state imagination and the
+Generative Collaborative reframe (Section~\ref{sec:gencol}). The complete
+specification (\texttt{SPEC.md}, $\sim$640 lines), architecture diagrams,
+and project chronicle are publicly available at
+\url{https://github.com/Playful-Sincerity/GRP-Generative-Reconciliation-Perception}.
+This paper is the first standalone treatment of the architecture; it
+complements but does not replace the technical specification.} \\[0.3em]
+Playful Sincerity Research}
+
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+\textit{``The brain is a prediction machine. \\
+Perception is controlled hallucination.''}\\[0.3em]
+--- standard summary, predictive processing literature
+\end{center}
+\vspace{1em}
+
+\begin{abstract}
+Modern computer-use agents---browser controllers, desktop automators,
+screen-grounded language models---share a perceptual posture inherited
+from the earliest scripting frameworks: \emph{observe, then interpret}.
+The page or screen arrives as input; the model decides what it is and
+what to do about it. Imagination, when it appears at all, lives in
+chain-of-thought reasoning \emph{between} steps. We propose a different
+posture. The agent imagines what it expects to see \emph{before} it
+looks. Observation does not produce interpretation directly; it produces
+a comparison against the imagined state, and the gap between the
+two---the prediction error---is the signal that drives attention,
+learning, and downstream action selection. We call this architecture
+\textbf{Generative Reconciliation Perception (\grp{})}. The contribution
+is not the addition of imagination as a feature. It is the structural
+claim that imagination is the substrate on which perception runs.
+
+The architecture supports two modes of imagination. \emph{Next-state
+imagination} generates the immediate consequence of the next
+action---the WebDreamer-style baseline used to gate when the world
+model updates and which tier of perception runs. \emph{End-state
+imagination} generates the target final state, optionally as a full
+video of the action sequence, and the system reverse-engineers the
+concrete actions whose execution would reproduce that target. The
+pipeline shifts work to where modern foundation models are
+strongest---imagining final states---and away from where they are
+weakest---grounding intermediate steps. Two architectural moves complete
+the contribution: dual-channel perception (visual and structural) with
+a \emph{collaborative} reconciler that treats inter-channel disagreement
+as informative cognitive dissonance rather than as error to be
+suppressed, and a reframe of the GAN-style adversarial paradigm into a
+\emph{Generative Collaborative} one---the imagined world and the
+observed world cooperate to converge rather than competing.
+
+This paper specifies the architecture, names the two modes of
+imagination, situates \grp{} against the prior work in world models
+and predictive processing, and surfaces the open questions whose
+resolution will determine which contributions are paper-citable
+architecture and which remain useful framing. Implementation has not
+started; the architecture is the artifact at this stage. Four
+falsification predictions are stated sharply enough to be checked
+once implementation begins (Section~\ref{sec:falsification}).
+\end{abstract}
+
+% ============================================================
+\section{Introduction}
+\label{sec:intro}
+% ============================================================
+
+\subsection{The Problem}
+\label{subsec:problem}
+
+Modern computer-use agents fall into three paradigms. The oldest---Selenium,
+Puppeteer, classical scripting---treats the page as a machine to send
+commands to. The dominant current paradigm---browser-use, Stagehand, Atlas,
+Comet---serializes the page or screen into a textual or visual representation,
+prompts a language model with that representation alongside the task,
+parses an action out of the response, and executes it. The frontier---UI-TARS,
+Lux, OmniParser-driven systems---adds dual-channel perception (visual plus
+structural) and improves the grounding pipeline.
+
+What unifies all three is the order of operations. Input arrives first.
+The agent decides what it is. The agent acts. The next observation
+overwrites the previous one. There is no expectation, no memory of what
+was supposed to be there, no internal model that gets surprised. If the
+page changed in an unexpected way, the agent has no mechanism for
+noticing---only for re-grounding. Each step starts from scratch.
+
+Three structural problems follow.
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{The agent is blind between actions.} Actions take time.
+  Pages load, animations run, modals appear, transitions happen. The
+  reactive agent has no model of what it expects during this interval, so
+  it either polls the screen at high cost or guesses when to move on.
+  Time-to-grounding is high; cost is high; reliability is low.
+\item \textbf{Surprise is invisible.} When something unexpected
+  happens---a layout shift, a new error state, a previously unseen
+  element---the agent has no way to register the surprise as such.
+  Re-grounding produces a new representation; the \emph{change} between
+  old and new representations is not part of the architecture's
+  vocabulary. The most informative moments in a session are precisely
+  the moments the architecture cannot see.
+\item \textbf{Quality scales with chain-of-thought density.} When the
+  agent has to reason its way to a correct action, performance on
+  complex tasks tracks the depth of the prompt scaffold rather than the
+  depth of the model's understanding. This is expensive and brittle.
+\end{enumerate}
+
+\subsection{A Precedent: Predictive Processing in Neuroscience}
+\label{subsec:precedent}
+
+The structural move \grp{} makes is not new. It is new only as applied
+to computer-use agents. Predictive processing---the framework in which
+the brain is treated as a generative model whose primary job is to
+\emph{predict} sensory input rather than to react to it---has been the
+dominant theory of perception in computational neuroscience for two
+decades. The free-energy principle (Friston and successors) gives a
+formal account in which perception is the minimization of prediction
+error between the brain's internal generative model and incoming
+sensory input. Action, in the same framework, is the resampling of the
+sensory input by moving the body so the prediction is confirmed. The
+two are unified: perception and action both reduce free energy.
+
+The empirical case is strong. Visual illusions, top-down attention
+effects, repetition suppression in fMRI signals, neural responses to
+unexpected stimuli---all are best explained by a brain that imagines
+what should be there and reconciles against what is. Animals do not
+perceive; they predict and reconcile. The brain is generative, and
+observation is the residual the generative model is trying to minimize.
+
+What \grp{} does is apply this architecture to a domain---computer-use
+agents---where it is, as of this writing, completely unoccupied in the
+published literature. World-model work in browser agents
+(WMA~\cite{wma}, WebDreamer~\cite{webdreamer},
+MobileDreamer~\cite{mobiledreamer}, CUWM~\cite{cuwm}) does the
+next-state half. Active inference for web navigation
+specifically~\cite{efe2025} is gestured at but not implemented in any
+shipped agent we surveyed. The architectural commitment to imagination
+\emph{as substrate}---rather than as one among several reasoning
+patterns the model can be prompted into---is, to our knowledge, novel
+in the computer-use agent space.
+
+\subsection{\grp{}'s Proposal}
+\label{subsec:proposal}
+
+\begin{principle}[Imagination as Substrate]
+\label{prin:substrate}
+Imagination is not a meta-cognition trick layered on top of perception.
+It is the substrate. Perception is the \emph{reconciliation} of imagination
+with observation, and prediction error is the primary learning signal
+of the system.
+\end{principle}
+
+A tighter way to say this: today's computer-use agents perceive in order
+to act. \grp{} imagines in order to perceive, and perceives in order to
+confirm or correct what was imagined. Imagination is not the optional
+flourish a sufficiently clever model adds when it has spare reasoning
+to spend. It is the layer the architecture runs on. Every observation
+is a comparison; every comparison produces a residual; every residual
+is a learning signal.
+
+Three claims follow from the principle.
+
+\textbf{First, imagination is best treated as infrastructure, not as
+inference.} When imagination is implemented as chain-of-thought
+reasoning during prompting, it competes with action selection, error
+recovery, and other reasoning the model is trying to do in the same
+context. When imagination is a structural component---a dedicated
+engine with explicit inputs (memory, task, last action) and explicit
+outputs (expected state, end-state target, confidence)---it stops
+competing with reasoning and starts subsidizing it. The agent reasons
+less about \emph{what should be there} because the imagination engine
+answers that question before reasoning begins.
+
+\textbf{Second, the high-value use of imagination is end-state, not
+next-state.} Most prior work on predictive perception in agents
+generates the immediate next state. This is useful: it gates
+learning, cheapens reconciliation, enables tiered perception. But the
+more valuable mode imagines the \emph{final} state---the target page
+after the design change has been applied, the final video frame after
+the robotic task is complete---and reverse-engineers the action
+sequence whose execution would reproduce that target. This inverts
+the standard pipeline. Quality of output scales with quality of
+imagination; the model's reasoning load shifts from \emph{grounding
+intermediate steps} (where it is brittle) to \emph{imagining final
+states} (where it is strong).
+
+\textbf{Third, reconciliation between imagination and observation is
+collaborative, not adversarial.} GAN-style architectures frame
+generation and discrimination as competition: one tries to fool, one
+tries to detect. \grp{} frames the imagined world and the observed
+world as collaborators working to converge. The agent adjusts its
+actions to bring the observation toward the imagined target, and
+adjusts its imagination toward what it actually observes when surprise
+indicates the imagination was wrong. Both sides update. Surprise is
+information, not failure.
+
+\subsection{Summary of Results}
+\label{subsec:summary}
+
+This paper contributes:
+
+\begin{enumerate}[leftmargin=*]
+\item A specification of imagination-as-substrate as an architectural
+  commitment for computer-use agents (Section~\ref{sec:loop}), not as
+  a chain-of-thought pattern.
+\item Two modes of imagination, with end-state imagination plus
+  reverse-engineering identified as the load-bearing
+  contribution (Section~\ref{sec:two-modes}).
+\item A dual-channel perception architecture with a collaborative
+  reconciler that treats inter-channel disagreement as first-class
+  informative signal (Section~\ref{sec:dual}). No published browser-agent
+  framework treats disagreement this way.
+\item The Generative Collaborative reframe of the GAN-style adversarial
+  paradigm, with explicit acknowledgment that a formal loss-function
+  statement is open work (Section~\ref{sec:gencol}, Q4).
+\item A tiered-perception cost-management structure in which imagination
+  subsidizes attention and only surprise escalates expensive
+  perception (Section~\ref{sec:cost}).
+\item An integration story locating \grp{} as the perception subsystem of
+  a broader research program (the Synthetic Sentiences Project), where
+  the imagination engine is shared infrastructure across perception,
+  value-aligned modulation, and dream cycles
+  (Section~\ref{sec:integration}).
+\item Four sharply stated falsification predictions
+  (Section~\ref{sec:falsification}) and five paper-relevant open
+  questions (Section~\ref{sec:open}).
+\end{enumerate}
+
+% ============================================================
+\section{The Cognitive Loop}
+\label{sec:loop}
+% ============================================================
+
+The full \grp{} loop is:
+\begin{equation*}
+\begin{aligned}
+&\text{IMAGINE} \to \text{OBSERVE} \to \text{RECONCILE} \to \text{DIFF} \\
+&\quad \to \text{PLAN} \to \text{CHECK} \to \text{GUARD} \to \text{ACT} \to \text{LEARN}
+\end{aligned}
+\end{equation*}
+with a closure arrow from action back to imagination through the memory
+graph. Each stage has a specific functional role.
+
+\begin{description}[leftmargin=*]
+\item[\textbf{IMAGINE}] generates either an \texttt{ImaginedState}
+  (next-state mode: the immediate consequence of the next action) or an
+  \texttt{ImaginedEndState} (end-state mode: the target final state,
+  optionally as a video). The engine reads from the memory graph, the
+  task context, and the last action.
+\item[\textbf{OBSERVE}] runs dual perception: a visual channel
+  (screenshot plus Set-of-Mark numbering) and an analytical channel
+  (DOM, accessibility tree, macOS Accessibility API), in parallel.
+\item[\textbf{RECONCILE}] merges the two channels into a unified
+  \texttt{PageModel}. Channel disagreements are surfaced as cognitive
+  dissonance---first-class structural information---and resolved by
+  collaborative arbitration rather than by suppressing one channel
+  in favor of the other (Section~\ref{sec:dual}).
+\item[\textbf{DIFF}] computes prediction error
+  $\err = d(\imag, \obs)$: how far is the imagined state from the
+  observed \texttt{PageModel}? In end-state mode, the diff also
+  computes how far the observed state is from the target.
+\item[\textbf{PLAN}] selects the next action from an affordance-aware
+  view of the page. Elements are perceived as action potentials
+  (Gibson's ecological psychology) rather than as inert structure.
+  Spreading activation through the memory graph weights affordances
+  by relevance to the task.
+\item[\textbf{CHECK}] runs the alignment critic---a cheap Haiku-class
+  call evaluating the candidate action against the original task
+  intent. The critic exists to interrupt the loop when the agent's
+  action drifts from what was asked, not because the model has gone
+  rogue but because the prediction-error path is locally optimal in
+  ways the task may not endorse.
+\item[\textbf{GUARD}] enforces the security membrane: content
+  isolation, HTTP-layer sandboxing, credential isolation, permission
+  tiers.
+\item[\textbf{ACT}] executes the action through the motor system, with
+  human-like input dynamics where the environment requires it.
+\item[\textbf{LEARN}] writes back to the memory graph if the prediction
+  error exceeds a threshold. Most observations do not produce a write.
+  Memory consolidates surprise, not routine.
+\end{description}
+
+The closure arrow---from action back to imagination---is the cycle
+that makes the system \emph{learn from experience}. Every action
+changes the world; every observation of that change produces a
+residual against the imagined consequence; every residual that
+exceeds threshold updates the model that generated the imagination
+in the first place. The agent's world model is the cumulative
+residual of its own predictions over time. Reconsolidation is the
+mechanism by which it improves.
+
+% ============================================================
+\section{The Structure of Imagination}
+\label{sec:two-modes}
+% ============================================================
+
+Before describing the two modes, it matters to be specific about what
+the imagination engine \emph{is} computationally. Imagination, in
+\grp{}, is not a metaphor for chain-of-thought. It is a typed
+generative procedure with explicit inputs and outputs, implemented by
+specific model classes appropriate to the granularity of what is being
+imagined.
+
+\subsection{What the Imagination Engine Generates}
+\label{subsec:structure-of-imagination}
+
+The imagination engine is polymorphic over output type. Different
+imagination targets call for different generative substrates.
+
+\paragraph{Structural imagination.}
+For next-state prediction (Section~\ref{subsec:next-state}) and for
+abstract end-state targets where layout and structure matter more than
+pixels, the engine queries a foundation language model conditioned on
+the memory graph, the task context, and the last action. Output is a
+typed \texttt{ImaginedState}---expected URL pattern, expected elements
+with positions and affordances, layout expectations, confidence with
+provenance. This is the WebDreamer-style baseline. Cheap, fast, and
+sufficient when the question is ``what should be there?'' rather than
+``exactly what should it look like?''
+
+\paragraph{Visual imagination via diffusion models.}
+For end-state targets where pixel-accurate visual fidelity is the
+specification---a target page mock, a target frame in a robotic task,
+a finished design---the engine generates the imagined target using
+image or video diffusion models. The agent imagines a screenshot
+literally. It produces an image or a sequence of frames. This image
+\emph{is} the target the reverse-engineering pass closes against.
+The choice of substrate matters: diffusion models are trained on
+exactly the corpus of finished visual artifacts the agent needs to
+imagine, and they generate at the resolution the dual-perception
+visual cortex consumes. The same model class that generates art is
+the model class that generates the target the agent is trying to
+build.
+
+\paragraph{Temporal imagination.}
+For tasks where the target is a process rather than a state---a video
+of the user experiencing the page correctly, the trajectory of a
+robotic motion---the engine generates frame sequences via video
+diffusion or autoregressive video models. Reverse-engineering then
+applies inverse dynamics (for motor) or differential codegen (for
+visual UI) to derive the action sequence whose execution reproduces
+the imagined frames.
+
+\bigskip
+\noindent
+The architectural commitment is that imagination is a \emph{component}
+with multiple implementations, not a single inference pass. The same
+loop runs over all three substrate choices; what changes is the
+specific generative model invoked for the imagine step. This factoring
+is what lets the architecture absorb improvements in diffusion models,
+video generation, and language-as-world-model independently. As any
+of these substrates improves, \grp{}'s imagination quality improves;
+the rest of the loop does not need to change.
+
+\subsection{Next-State Imagination}
+\label{subsec:next-state}
+
+Given the current state of the page or screen, the most recent
+action, and the agent's memory of similar contexts, generate the
+expected next state. This is the WebDreamer-style baseline. It runs
+on every action and serves three purposes: it gates the perception
+tier (Section~\ref{sec:cost}); it gates the memory write (if the
+prediction was correct, no reconsolidation is needed; if it was
+wrong, the surprise is encoded); and it cheapens reconciliation (the
+reconciler has a strong prior to compare against, and inter-channel
+disagreement is easier to interpret when the expected state is
+known).
+
+The contribution at this layer is not novelty in the imagination
+itself---WMA, WebDreamer, MobileDreamer, and CUWM all do versions of
+this. The contribution is treating imagination as
+\emph{infrastructure} rather than as inference: it runs always, it
+produces a typed object (\texttt{ImaginedState}), and downstream
+components depend on it as a structural input. Cost is amortized
+across the whole loop.
+
+\subsection{End-State Imagination and Reverse-Engineering}
+\label{subsec:end-state}
+
+Given the task intent and the current state, imagine the
+\emph{target}---the final state of the page or screen after the task
+is complete, or, more powerfully, an entire video of the action
+sequence playing out correctly. Then reverse-engineer the action
+sequence whose execution would reproduce that target.
+
+This is the load-bearing contribution of the paper. Two concrete
+instantiations make the move clear.
+
+\paragraph{Web design.}
+The current page is a screenshot. The task is ``make this page match
+the design intent.'' The imagination engine generates a target
+screenshot---what the page should look like after the change---or a
+short video of a user experiencing the page as it is supposed to be
+experienced. Reverse-engineering takes that target and produces the
+diff in HTML, CSS, and JavaScript that closes the gap. The agent
+runs the diff, observes the result, reconciles it against the
+imagined target, and iterates. The pipeline shifts work to where
+modern foundation models are strongest---imagining final
+states---and away from where they are weakest---grounding
+intermediate code edits.
+
+\paragraph{Robotics and motor control.}
+The task is ``pick up the cup and pour it.'' The imagination engine
+generates a video of the task being performed correctly: the
+trajectory of the arm, the grip on the handle, the angle of the pour,
+the rest. Inverse dynamics derives the motor commands whose execution
+reproduces those frames. The agent executes the commands, observes
+the actual video, reconciles it against the imagined video, and
+updates either the motor model (if the actions did not produce the
+imagined effects) or the imagination engine itself (if the imagined
+target was off-distribution from what the embodiment can actually
+do).
+
+The mechanism is the same in both cases. The output channel---code or
+motor commands---is different. The pipeline structure is
+\emph{imagine target $\to$ derive actions $\to$ execute $\to$
+reconcile against target $\to$ iterate}. This is not a chain-of-thought
+trick. It is an architectural inversion of how the agent decides what
+to do. Quality of output scales with quality of imagination, because
+the imagination \emph{is} the specification.
+
+\subsection{Why End-State Matters More}
+\label{subsec:why-end-state}
+
+End-state mode plays to the model's strengths: foundation models---and
+diffusion models in particular---are trained on enormous corpora of
+finished artifacts, and they imagine final states with detail and
+consistency. They are much weaker at intermediate-step reasoning, where
+errors compound and brittleness scales with depth. End-state imagination
+skips the brittle middle. It also compresses long-horizon planning:
+fifty actions are hard to plan as fifty decisions but easy to plan as
+one imagined target plus an inverse procedure. And it produces
+verifiable artifacts---the imagined target is something the agent can
+\emph{show}, making intent legible to a human reviewer in a way
+intermediate reasoning chains usually are not. The trade-off is
+computational: imagining a full thirty-second video at frame rate is
+expensive, and sparse keyframes, structural targets, and progressive
+refinement are open optimizations (Section~\ref{sec:open}, Q1).
+
+% ============================================================
+\section{Dual Perception with Collaborative Reconciliation}
+\label{sec:dual}
+% ============================================================
+
+\grp{} runs two perception channels in parallel.
+
+\subsection{Visual Cortex}
+A screenshot of the page or screen is processed by a vision-language
+model, with Set-of-Mark numbering applied to interactable elements.
+The output describes the spatial layout, the visual states of
+elements (highlighted, disabled, loading, error), the colors and
+typography, the overall composition. \emph{Strengths:} sees what is
+actually rendered, including custom widgets, dynamic content, and
+visual feedback that is not exposed in structured form.
+\emph{Weaknesses:} grounding is approximate, exact text values are
+sometimes hallucinated, and the channel is expensive.
+
+\subsection{Analytical Cortex}
+The DOM, accessibility tree, or macOS Accessibility API is queried
+directly. The output describes the structural layout: element roles,
+ARIA labels, exact text values, click handlers, form state.
+\emph{Strengths:} ground truth on structure and interactivity, free
+or near-free in token cost, deterministic. \emph{Weaknesses:} cannot
+see dynamic visual state, custom-painted canvases, animations, or
+anything not exposed through accessibility APIs.
+
+\subsection{Disagreement as Information}
+The two channels disagree often. The visual cortex sees a button
+labeled ``Submit''; the analytical cortex reports a
+\texttt{<div role="button">} with no \texttt{aria-label}. The visual
+cortex sees a loading spinner; the analytical cortex reports the page
+as fully loaded. The visual cortex sees a modal blocking the page;
+the analytical cortex reports the modal as hidden behind a
+\texttt{display:none} rule that is being overridden by an inline
+style. \emph{These are not channel errors. They are information.}
+The disagreement itself is the signal.
+
+The reconciler treats inter-channel disagreement as cognitive
+dissonance: a structural property of the joint representation, not an
+error to be suppressed by picking one channel. Each disagreement is
+recorded as a \texttt{Disagreement} object with the visual claim, the
+analytical claim, and a resolution rule. The arbitration is
+collaborative: visual wins for ``looks right?'' questions, analytical
+wins for ``is clickable?'' questions, both are flagged as uncertain
+when neither wins, and the disagreement itself becomes a node in the
+agent's memory graph for future reference. The next time a similar
+disagreement arises on the same site, the agent does not have to
+re-derive the resolution.
+
+No published browser-agent framework we surveyed treats inter-channel
+disagreement as a first-class informative signal. UI-TARS combines
+vision and structure but picks one when they disagree. browser-use
+does the same. The published work assumes the channels should agree,
+that disagreement is a defect, and that the architecture should hide
+it. \grp{} makes the opposite assumption: disagreement is the most
+informative thing the dual perception produces, and it should be
+surfaced.
+
+% ============================================================
+\section{The Generative Collaborative Reframe}
+\label{sec:gencol}
+% ============================================================
+
+The standard generative-discriminative pattern in machine learning is
+adversarial. A generator produces candidates; a discriminator tries to
+detect them; the system reaches equilibrium at the saddle point of a
+minimax loss. This pattern, formalized in the GAN
+literature~\cite{gan2014} and elaborated extensively since, has shaped
+how researchers think about generation-plus-evaluation systems for
+over a decade.
+
+\grp{} rejects the framing for its own architecture. The imagined
+world and the observed world are not adversaries. They are
+collaborators working to converge. The agent adjusts its actions so
+the observed world bends toward the imagined one; the agent adjusts
+its imagination so the imagined world tracks what is actually true
+about the observed one. Both sides update. Both sides cooperate. The
+reconciler is not a discriminator picking a winner---it is a
+collaborative procedure that closes the gap by updating whichever
+side is most-cheaply-updated given current evidence.
+
+We call the resulting framing \emph{Generative Collaborative}. The
+natural acronym, GCN, is taken in the machine-learning literature
+(Graph Convolutional Networks); a paper publication will need a
+different shorthand, but the concept stands regardless of how it is
+eventually labeled.
+
+\begin{remark}[Status of the reframe]
+\label{rem:gencol-status}
+The Generative Collaborative reframe is currently a \emph{framing
+decision} backed by an architectural commitment, not a citable
+architectural contribution with a formal loss-function statement.
+Until the formal mathematical content of ``cooperate''---single shared
+loss, two losses provably aligned in expectation, or something more
+complex---is grounded, the reframe should be presented as the framing
+under which \grp{}'s reconciler is designed, not as a published
+mathematical result. This is the most important open question in the
+paper (Section~\ref{sec:open}, Q4).
+\end{remark}
+
+Three things follow from the reframe.
+
+\textbf{(1) Surprise is not failure.} In a GAN, the generator failing
+to fool the discriminator means the generator must improve. In \grp{},
+the imagined state failing to match the observed state means the world
+model has new information. Surprise is the input the reconciler is
+\emph{for}. Suppressing surprise---picking a winner channel, hiding
+disagreements, training the imagination to never be wrong---would
+defeat the architecture.
+
+\textbf{(2) The two sides share a loss.} What loss, exactly, the
+imagination and the observation share is open
+(Remark~\ref{rem:gencol-status}). The framing says they cooperate; the
+formal mathematical content of ``cooperate'' is not yet settled.
+
+\textbf{(3) The framing is consistent with a broader research
+program.} \grp{} is one subsystem of a larger project (the Synthetic
+Sentiences Project) whose alignment thesis is that aligned behavior
+emerges from architectures whose internal substrates \emph{converge
+through attraction} rather than being constrained by external
+penalties. The collaborative reconciler is the same move at the
+perception layer that the broader project makes at the
+value-alignment layer: cooperation rather than competition. This is
+not coincidence; it is design.
+
+% ============================================================
+\section{Cost Management: Tiered Perception}
+\label{sec:cost}
+% ============================================================
+
+The full \grp{} pipeline is expensive: imagination, dual perception,
+reconciliation, alignment critic, motor system, memory write-back.
+Running it on every action would defeat the architecture for any task
+with more than a handful of steps.
+
+The architecture defines four tiers of perception, selected by the
+prediction error from the previous step (Table~\ref{tab:tiers}).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lllll}
+\toprule
+\textbf{Tier} & \textbf{Name} & \textbf{What runs} & \textbf{Tokens} & \textbf{When} \\
+\midrule
+0 & Reflex & DOM-only check, no LLM call & 0 & Confirming, waiting \\
+1 & Glance & DOM + light a11y, Haiku-class & $\sim 500$ & Familiar pages \\
+2 & Look & Screenshot + SoM + a11y, Sonnet & $\sim 2{,}000$ & New pages \\
+3 & Study & Full pipeline + imagination & $\sim 5{,}000$ & First visit, high surprise \\
+\bottomrule
+\end{tabular}
+\caption{Tiered perception. Tier escalates on prediction error.}
+\label{tab:tiers}
+\end{table}
+
+A ten-step task with mostly familiar transitions runs at Tier~0 or~1
+for most steps and at Tier~3 only at the moments the agent is
+genuinely uncertain. The cost of a typical task drops from
+$\sim 50{,}000$ tokens (running the full pipeline every step) to
+$\sim 15{,}000$ tokens. The architecture is not just better; it is also
+cheaper to run, because imagination subsidizes attention.
+
+This tier structure is the same Kahneman dual-process pattern applied
+to perception. Familiar inputs run on System~1 (cheap, automatic).
+Surprising inputs escalate to System~2 (expensive, deliberate).
+Imagination is what makes the distinction possible---without an
+expectation, every observation looks equally novel, and there is
+nothing to escalate from.
+
+% ============================================================
+\section{Architecture in Brief}
+\label{sec:architecture}
+% ============================================================
+
+The full architectural specification is in \texttt{SPEC.md}
+($\sim$640 lines, including data structures, security model, and
+module map). What follows is the structural summary at the level
+needed for this paper.
+
+\subsection{Data Structures}
+
+\texttt{ImaginedState} (next-state mode) carries the expected URL
+pattern, expected elements with positions and affordances, layout
+expectations, and a confidence value with provenance.
+
+\texttt{ImaginedEndState} (end-state mode) carries a target screenshot
+or video sequence, the intent, a confidence value, and a
+reverse-engineering strategy: visual-diff-then-codegen, motor-inverse,
+or plan-search.
+
+\texttt{PageModel} is the reconciled output of dual perception:
+elements with confidence levels, layout, disagreements, and
+affordances.
+
+\texttt{Affordance} describes an element's action potential---type,
+expected outcome, confidence, relevance to task, risk class, source.
+
+\texttt{Disagreement} describes inter-channel conflicts with their
+resolution rule and provenance.
+
+\subsection{Memory}
+
+The world model is not part of \grp{}. It lives in a separate
+subsystem (\textsc{mwm}: Memory as World Model), and \grp{} writes
+content into \textsc{mwm}'s primitives rather than owning a graph
+schema. This factoring is deliberate: every subsystem in the broader
+project that produces or consumes beliefs touches the same graph, and
+\grp{}'s perception flood is one input among several
+(Section~\ref{sec:integration}).
+
+\subsection{Pluggable Backends}
+
+Perception is pluggable across Claude Vision, Lux (OpenAGI),
+OmniParser, Playwright accessibility, and macOS Accessibility API.
+Action is pluggable across Playwright, Patchright, Camoufox,
+nodriver, PyAutoGUI, and macOS AppleScript. Adapters cover browser,
+desktop, and any-window environments.
+
+\subsection{Security Membrane}
+
+Filesystem sandbox at \texttt{\textasciitilde/.grp/workspace/};
+content isolation between web text and agent instructions; HTTP-layer
+sandbox with domain allowlist and method restrictions; credential
+broker that fills directly through the browser engine without exposing
+credentials to the LLM context; alignment critic on every action;
+permission tiers (auto, confirm, deny) governing different action
+classes.
+
+\subsection{Build Phases}
+
+Implementation proceeds in six phases:
+\emph{Walking} (basic Playwright + visual perception),
+\emph{Seeing Double} (dual perception + reconciler),
+\emph{Dreaming} (next-state imagination),
+\emph{Imagining the End} (end-state imagination + reverse-engineering),
+\emph{Feeling} (temporal perception + motor system),
+\emph{Speaking} (alignment critic + full security membrane).
+
+End-state imagination is intentionally introduced \emph{after} the
+next-state loop is working, because reverse-engineering depends on a
+stable substrate to verify against.
+
+% ============================================================
+\section{Where \grp{} Belongs}
+\label{sec:integration}
+% ============================================================
+
+\grp{} does not stand alone, even though this paper presents it as a
+standalone contribution. It is the perception subsystem of a broader
+research program---the Synthetic Sentiences Project---whose other
+subsystems consume \grp{}'s outputs and shape what \grp{} imagines.
+
+\paragraph{Memory.}
+The world model lives in \textsc{mwm}~\cite{mwm}. \grp{} writes
+predicted states, observed states, and causal edges (clicking $X$ led
+to state $Y$) into \textsc{mwm} as nodes and edges. The graph is the
+agent's long-term substrate; \grp{} is the perceptual input layer that
+feeds it. When the agent asks ``have I seen this site before?'' or
+``what usually happens after this action?'', the answer is a
+traversal of the \textsc{mwm} graph, not an internal-to-\grp{} lookup.
+
+\paragraph{Earned conviction.}
+Page elements have confidence levels rooted in evidence chains. The
+dissonance-as-information primitive in \grp{}'s reconciler is the same
+primitive the cognition subsystem uses to surface unresolved beliefs.
+Curiosity about unknown elements (low-confidence nodes) is the same
+affect that drives investigation in the broader cognitive layer.
+
+\paragraph{Value-aligned modulation.}
+What to attend to, what to imagine, and what counts as an acceptable
+action are weighted by the agent's current value-alignment state. The
+alignment critic that evaluates each action before execution is a
+value-check at the perception/action boundary. The imagination engine
+itself is conditioned on what the agent cares about: the same task
+can produce different imagined end-states depending on the values
+active.
+
+\paragraph{Working memory and dream cycles.}
+The page being perceived lives in a working tree that grows when new
+perceptual content is loaded and shrinks when relevance fades. Sleep
+cycles consolidate \grp{}'s perceptual outputs into long-term graph
+structure. Dream cycles use \grp{}'s imagination engine to
+\emph{simulate} without observing---adversarial self-reflection,
+value-conflict tests, hypothetical scenarios. Imagination is the
+substrate of perception when the agent is awake and the substrate of
+simulation when the agent is asleep.
+
+\paragraph{Voice.}
+When the agent speaks about what it perceived, the acoustic prosody
+of its voice should reflect the confidence levels in the page model.
+Honest disfluency around low-confidence perceptions is prosodic
+accuracy, not a speech defect.
+
+\bigskip
+\noindent
+The factoring is deliberate. The imagination engine \grp{} uses for
+end-state targets, the should-world model that drives value-aligned
+modulation, and the simulation substrate dream cycles run on are the
+\emph{same mechanism} applied at three scales: task-scale (\grp{}),
+being-scale (values), moment-scale (cycles). One imagination engine,
+three uses. This is the unification thesis the broader project rests
+on.
+
+% ============================================================
+\section{Literature Positioning}
+\label{sec:literature}
+% ============================================================
+
+\grp{} draws from and stands against four overlapping bodies of work.
+
+\subsection{World Models for Computer-Use Agents}
+WMA~\cite{wma} introduced transition-focused observation abstraction
+for predicting how actions change pages.
+WebDreamer~\cite{webdreamer} used the LLM itself as a world model,
+``dreaming'' outcomes before committing---closest in spirit to
+\grp{}'s next-state mode but with no end-state mode, no reconciler,
+and no architectural integration with memory.
+MobileDreamer~\cite{mobiledreamer} showed sparse text sketches
+suffice for effective world modeling.
+WebWorld~\cite{webworld} and CUWM~\cite{cuwm} advanced trajectory
+simulation and two-stage prediction respectively.
+DreamerV3~\cite{dreamerv3} provides the foundational world model
+architecture from RL.
+
+\grp{}'s contribution against this line is end-state imagination with
+reverse-engineering as a unified architectural mode, not an emergent
+capability.
+
+\subsection{Visual Grounding for Agents}
+SeeAct~\cite{seeact} established that grounding is the bottleneck,
+not reasoning.
+Set-of-Mark~\cite{som} and OmniParser~\cite{omniparser} provide
+standard tools for converting screenshots into addressable elements.
+UGround~\cite{uground} showed universal visual grounding generalizes
+across UIs.
+WebVoyager~\cite{webvoyager} demonstrated a 28-point gap between
+SoM-based and text-only agents.
+
+\grp{} uses these tools as the visual channel of dual perception; the
+contribution is the reconciler that combines them with structural
+input rather than picking between them.
+
+\subsection{Active Inference and Predictive Processing}
+The free-energy principle and predictive processing literature
+(Friston and successors) provide the theoretical grounding for
+imagination-then-observation as a perceptual architecture.
+\cite{efe2025} shows expected free energy reduces to prediction error
+in the relevant limit.
+\cite{causal2024} proves causal world models are necessary for
+robust generalization.
+\cite{causalang2024} connects causal variables to language.
+
+\grp{} applies this framing to a domain---browser and computer-use
+agents---where it is, as of this writing, completely unoccupied in
+the published literature.
+
+\subsection{Generative Adversarial Architectures}
+The GAN literature~\cite{gan2014} establishes the dominant pattern
+for generation-plus-evaluation systems. \grp{} rejects the framing
+for its perception layer (Section~\ref{sec:gencol}). The Generative
+Collaborative reframe is, to our knowledge, novel as an architectural
+application to perception---though related ideas exist in cooperative
+multi-agent learning.
+
+% ============================================================
+\section{Falsification}
+\label{sec:falsification}
+% ============================================================
+
+The architecture commits to specific predictions. Four are sharp
+enough to falsify.
+
+\begin{description}[leftmargin=*]
+\item[\textbf{F1.}] \emph{End-state imagination outperforms
+  chain-of-thought for tasks of complexity above a threshold.} On a
+  benchmark of web-design and motor-control tasks of varying
+  complexity (measured by step count and error compounding), end-state
+  imagination plus reverse-engineering should produce higher success
+  rates than chain-of-thought reasoning at matched compute, with the
+  gap growing with complexity. \emph{If end-state imagination
+  underperforms or matches chain-of-thought across the complexity
+  spectrum, the central claim of the paper is wrong.}
+
+\item[\textbf{F2.}] \emph{Disagreement between dual perception
+  channels is informative.} Channel disagreements should correlate
+  with locations in the page where prediction error is later highest,
+  with elements that subsequently produce action errors, and with
+  sites where causal-edge updates in the memory graph are
+  highest-weighted. \emph{If disagreements are random noise,
+  uncorrelated with downstream signal, the reconciler's
+  dissonance-as-information claim is empirically unsupported.}
+
+\item[\textbf{F3.}] \emph{Imagination subsidizes perception cost.} A
+  complete \grp{} pipeline running on a benchmark of mixed-difficulty
+  tasks should produce a token-cost distribution where the median
+  step runs at Tier~0 or~1, escalating to Tier~3 only at moments of
+  high prediction error. \emph{If the cost distribution is flat across
+  tiers, the architecture is not actually subsidizing cheap perception
+  with imagination---it is just adding cost.}
+
+\item[\textbf{F4.}] \emph{The collaborative reconciler is more
+  accurate than a winner-takes-all reconciler.} A controlled
+  comparison where one variant of the system uses \grp{}'s
+  collaborative arbitration and the other variant picks the
+  higher-confidence channel should show the collaborative variant
+  produce more accurate \texttt{PageModel} outputs and fewer
+  downstream action errors. \emph{If the winner-takes-all variant
+  matches or beats the collaborative variant, the dissonance-as-information
+  claim is empirically unsupported.}
+\end{description}
+
+These predictions cannot all be checked at once; they require an
+implementation, a benchmark, and a controlled comparison. They are
+stated here so future work can confirm, refine, or reject each.
+
+% ============================================================
+\section{Open Questions}
+\label{sec:open}
+% ============================================================
+
+The architecture is specified. Implementation has not started. Five
+questions are paper-relevant; nine are tracked in
+\texttt{research/open-questions.md} in the project repository. The
+five most important:
+
+\begin{description}[leftmargin=*]
+\item[\textbf{Q1.}] \emph{How does end-state imagination scale in
+  compute?} A thirty-second video target is hundreds of frames. The
+  cost-benefit curve relative to extended chain-of-thought reasoning
+  is unknown. Open: the minimum-viable representation of an end-state
+  target (single frame, sparse keyframes, structural target plus
+  visual hint), and the task complexity at which end-state imagination
+  beats chain-of-thought.
+
+\item[\textbf{Q2.}] \emph{How does reconciliation arbitrate when both
+  sides are uncertain?} The standard reconciler assumes the observation
+  is the more reliable anchor. End-state mode breaks this---the
+  imagination \emph{is} the target; observation is what we are trying
+  to bend toward it. Both sides have confidence levels that may be
+  similar. The right confidence-arbitration rule when the imagined and
+  observed sides have comparable confidence is not yet specified.
+
+\item[\textbf{Q3.}] \emph{How does \grp{} write back into memory
+  without polluting the graph?} \grp{} produces a flood of perception
+  nodes and causal-edge candidates. Not every perception belongs in
+  long-term memory. The consolidation threshold, the distinction
+  between stable site patterns and one-off page states, and the
+  coordination with sleep cycles for staged consolidation are all
+  open.
+
+\item[\textbf{Q4.}] \emph{What is the formal mathematical content of
+  ``collaborative'' versus ``adversarial''?} The Generative
+  Collaborative reframe is currently framing, not architecture-with-a-citable-loss-function.
+  Until there is a single shared loss, or two losses provably aligned
+  in expectation, the reframe is paper-citable as a framing decision
+  but not as an architectural contribution. \emph{This is the most
+  important open question in the paper.}
+
+\item[\textbf{Q5.}] \emph{Reverse-engineering reliability across the
+  two paths.} End-state to action sequence is two distinct problems
+  with different failure modes. The web-design path (visual diff to
+  code) is well-studied as image-to-code, but iterative refinement
+  under prediction error is open. The motor path (imagined video to
+  motor commands) is well-studied as inverse dynamics, but with
+  imagined frames as legitimate input rather than observed frames;
+  whether the inverse model generalizes when the imagined video is
+  slightly off-distribution is an empirical question.
+\end{description}
+
+% ============================================================
+\section{Limitations and Scope}
+\label{sec:limitations}
+% ============================================================
+
+\subsection{What \grp{} Does Not Do}
+
+\textbf{It does not eliminate language-model dependence.} The
+imagination engine, the reconciler, the alignment critic, and the
+planner all rely on foundation models. \grp{} restructures how those
+models are used, but does not replace them.
+
+\textbf{It does not solve the grounding problem.} Visual grounding
+remains hard. \grp{} mitigates it by adding a structural channel and
+a collaborative reconciler, but neither channel is reliable in
+isolation, and the reconciler depends on both being approximately
+correct most of the time.
+
+\textbf{It does not eliminate the need for benchmarks.} The
+falsification predictions in Section~\ref{sec:falsification} require
+a controlled comparison against existing systems. The architecture is
+a commitment until those comparisons are run.
+
+\subsection{Scope Beyond Computer-Use}
+
+The same architecture---generate expectation, observe, reconcile,
+learn from residual---applies beyond browsers: to robotics
+(Section~\ref{subsec:end-state}), to scientific instrumentation (the
+experiment is the act, the readout is the observation, the prior
+model is the imagination), to human-AI collaboration (the agent
+imagines what the human wants, observes the reaction, reconciles).
+The computer-use case is the most immediately tractable and the
+closest to deployment. If the move works there, the architectural
+commitment generalizes.
+
+% ============================================================
+\section{Outlook}
+\label{sec:outlook}
+% ============================================================
+
+\grp{} is an architectural commitment, not a finished system. The
+specification is complete; the implementation is in front of us. The
+most immediate work is the next-state pipeline (Phases 1--3 in the
+build plan), the integration with the memory subsystem, and the
+first benchmark of imagination-subsidized perception on a
+representative web-control task. The end-state mode (Phase 4) follows
+the next-state mode is working.
+
+The paper-blocking work is Q4---the formal mathematical content of
+the collaborative reframe. Until that is grounded, the Generative
+Collaborative claim should be presented as a framing decision and a
+research direction, not as a citable architectural contribution. This
+is the honest version of where the paper stands.
+
+What we are committing to, in writing: imagination is not a feature
+of sufficiently sophisticated reasoning. It is the substrate.
+Perception is reconciliation. The architecture's job is to imagine
+well, observe carefully, and learn from the gap.
+
+% ============================================================
+\section*{Acknowledgments}
+\label{sec:acknowledgments}
+% ============================================================
+
+The original architecture was conceived under the codename
+\emph{Phantom} during a research sprint on March 31, 2026, and was
+developed through April 2026 with the assistance of the Playful
+Sincerity Digital Core---a configuration of Claude Code rules,
+skills, hooks, and chronicles maintained as a research and methodology
+partner. The codename was changed to \grp{} (Generative Reconciliation
+Perception) on April~22, 2026, to name the actual mechanism rather
+than a stealth side property, alongside a sharpening that introduced
+end-state imagination and the Generative Collaborative reframe. Eight
+parallel research agents surveyed approximately 65 papers and 80
+GitHub repositories to validate the originality of the architecture's
+claimed contributions; results are catalogued in
+\texttt{research/landscape.md} and \texttt{research/references.md}.
+The Synthetic Sentiences Project, of which \grp{} is the perception
+subsystem, provides the broader architectural context within which
+\grp{}'s contributions cohere; the sister project Memory as World
+Model (MWM)~\cite{mwm} provides the graph substrate \grp{} writes into.
+
+% ============================================================
+\begin{thebibliography}{99}
+% ============================================================
+
+\bibitem{wma}
+WMA: Web Agents with World Models. arXiv:2410.13232 (2024).
+
+\bibitem{webdreamer}
+WebDreamer: LLM as World Model for Web Agents. arXiv:2411.06559 (2024).
+
+\bibitem{mobiledreamer}
+MobileDreamer: Textual Sketch World Models. arXiv:2601.04035 (2026).
+
+\bibitem{webworld}
+WebWorld: 1M+ Trajectory Simulator for Web Agents. arXiv:2602.14721 (2026).
+
+\bibitem{cuwm}
+CUWM: Computer-Using World Model. arXiv:2602.17365 (2026).
+
+\bibitem{dreamerv3}
+DreamerV3. arXiv:2301.04104 (2023). Nature (2025).
+
+\bibitem{seeact}
+SeeAct: GPT-4V is a Generalist Web Agent. ICML 2024 / arXiv:2401.01614.
+
+\bibitem{som}
+Set-of-Mark Prompting Unleashes Extraordinary Visual Grounding in GPT-4V.
+Microsoft Research (2023).
+
+\bibitem{omniparser}
+OmniParser for Pure Vision Based GUI Agent. arXiv:2408.00203 (2024).
+
+\bibitem{uground}
+UGround: Universal Visual Grounding for GUI Agents. ICLR 2025 Oral /
+arXiv:2410.05243.
+
+\bibitem{webvoyager}
+WebVoyager: End-to-End Web Agent with Large Multimodal Models. ACL 2024 /
+arXiv:2401.13919.
+
+\bibitem{efe2025}
+Expected Free Energy as Variational Inference. arXiv:2504.14898 (2025).
+
+\bibitem{causal2024}
+Robust Agents Learn Causal World Models. arXiv:2402.10877 (2024).
+
+\bibitem{causalang2024}
+Language Agents Meet Causality. arXiv:2410.19923 (2024).
+
+\bibitem{gan2014}
+Goodfellow, I.~et~al. Generative Adversarial Nets. NeurIPS 2014.
+
+\bibitem{mwm}
+Memory as World Model (MWM). Playful Sincerity Research, April 2026. \\
+\url{https://github.com/Playful-Sincerity/Memory-as-World-Model}.
+
+\end{thebibliography}
+
+\end{document}
