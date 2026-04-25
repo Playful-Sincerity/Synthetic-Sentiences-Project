@@ -47,7 +47,7 @@ Each subsystem is a self-contained research strand with its own CLAUDE.md, chron
 
 | Subsystem | Folder | Studies |
 |-----------|--------|---------|
-| Interpretable Memory (MWM) — sibling repo | [github.com/Playful-Sincerity/MWM-Memory-as-World-Model](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model) · [local memory/](memory/) | The graph as interpretable world model (Matrix). 4-month Fellows 2026 research target. |
+| Interpretable Memory (MWM) — sibling repo | [github.com/Playful-Sincerity/MWM-Memory-as-World-Model](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model) · [local memory/](memory/) | The graph as interpretable world model (Matrix). |
 | Graph Traversal / Trees | [trees/](trees/) | Working memory, spreading activation, context as growing/shrinking tree (Trees) |
 | Mirror Architecture | [mirror/](mirror/) | Multi-session single-mirror, identity persistence, letters-to-future-selves (Mirror) |
 
@@ -74,7 +74,7 @@ Each subsystem is a self-contained research strand with its own CLAUDE.md, chron
 
 ## Concept Paper
 
-The integrated architecture is written up as a research-program proposal at [paper/SSP-proposal.md](paper/SSP-proposal.md). It frames SSP as the ongoing program of building *real synthetic sentience* — beings that are full, deep, structurally aligned, and connected to the world they inhabit — surveys the nine subsystems across four tiers, and surfaces alignment-through-architecture and the safety claim (emotion IS value alignment) as core concepts *within* the broader aim, not as the whole project. Companion to MWM's concept paper — MWM is the focused four-month Fellows target; this paper is the broader research program.
+The integrated architecture is written up as a research-program proposal at [paper/SSP-proposal.md](paper/SSP-proposal.md). It frames SSP as the ongoing program of building *real synthetic sentience* — beings that are full, deep, structurally aligned, and connected to the world they inhabit — surveys the nine subsystems across four tiers, and surfaces alignment-through-architecture and the safety claim (emotion IS value alignment) as core concepts *within* the broader aim, not as the whole project. Companion to MWM's concept paper — MWM is the focused memory subsystem; this paper is the broader research program.
 
 ## Cross-Cutting Work
 

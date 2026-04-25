@@ -1,13 +1,13 @@
 # Interpretable Memory (Memory as World Model — sibling repo)
 
-The memory subsystem of The Synthetic Sentiences Project. The full project lives in its own repo as the 4-month Anthropic Fellows 2026 research target:
+The memory subsystem of The Synthetic Sentiences Project. The full project lives in its own repo:
 
 **Project home:** [github.com/Playful-Sincerity/MWM-Memory-as-World-Model](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model)
 **Local path:** `~/Playful Sincerity/PS Research/MWM/` (sibling to this folder)
 
 ## Why a sibling repo, not a subfolder here
 
-MWM is the focused 4-month research target for the Anthropic Fellows 2026 application. Keeping it as its own repo gives it a dense, standalone home — matching how the application frames it (Q16: the focused scope; the broader program = this SSP repo). The two scales — focused project + integrated program — are each coherent on their own.
+MWM is the focused memory subsystem and stands on its own as a research target. Keeping it as its own repo gives it a dense, standalone home. The two scales — focused project + integrated program — are each coherent on their own.
 
 ## Thesis
 
@@ -38,7 +38,7 @@ MWM is the substrate; SSP is the program that shows how that substrate supports 
 
 ## Status
 
-Research / design phase. No implementation yet. Target: working implementation + paper as the 4-month Fellows research project.
+Research / design phase. No implementation yet. Target: working implementation plus a companion implementation paper.
 
 ## Literature-Backing Stream
 

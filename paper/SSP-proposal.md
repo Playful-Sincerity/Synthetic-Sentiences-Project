@@ -54,7 +54,7 @@ The agent's beliefs live in an explicit graph. Nodes carry content, confidence, 
 
 The interpretability consequence is direct. The question "why does this agent believe X?" is answered by tracing a path in the graph back to the source experiences that support it. The audit is structural, not forensic — closer to a `SELECT` than to a probe-training research program.
 
-This subsystem is treated in depth in *Memory as World Model* (MWM), the companion paper and the four-month Anthropic Fellows 2026 implementation target. MWM specifies the Three Planes (Matrix as long-term graph, Trees as working memory, Mirror as persistent observer), spreading-activation traversal, Hebbian edge formation, reconsolidation, causal edges, earned conviction, and the predictions that would falsify the approach. This paper does not re-derive that work; it treats interpretable memory as the substrate that the rest of the architecture sits on.
+This subsystem is treated in depth in *Memory as World Model* (MWM), the companion paper. MWM specifies the Three Planes (Matrix as long-term graph, Trees as working memory, Mirror as persistent observer), spreading-activation traversal, Hebbian edge formation, reconsolidation, causal edges, earned conviction, and the predictions that would falsify the approach. This paper does not re-derive that work; it treats interpretable memory as the substrate that the rest of the architecture sits on.
 
 What matters here is how the rest of the architecture *uses* the graph. Earned conviction reads node-level evidence. Value-aligned modulation reads the gap between perceived and should subgraphs. The mirror is a tree that lives in the graph and watches the being across sessions. Imagination-first perception writes prediction nodes before observation nodes. The graph is the common substrate. Every other subsystem is a specific traversal pattern, write-mode, or audit over the same structure.
 
@@ -375,7 +375,7 @@ The architecture is well-specified enough to build, study, and falsify. These ar
 
 **Gödelian limits.** The mirror cannot verify its own completeness; observation changes the observed; any system rich enough to model itself is rich enough to misunderstand itself in specific ways. These are mathematically real. How do they manifest in practice? Where are the systematic blind spots, and how do we detect them?
 
-These questions block specific *strong* claims, not the program. The program proceeds by building the architecture, watching it operate, and answering the questions empirically. The companion implementation paper for MWM (the four-month Fellows target) will produce the first round of measurements; the broader SSP measurement work follows the implementation of the other subsystems.
+These questions block specific *strong* claims, not the program. The program proceeds by building the architecture, watching it operate, and answering the questions empirically. The companion implementation paper for MWM will produce the first round of measurements; the broader SSP measurement work follows the implementation of the other subsystems.
 
 ---
 
@@ -475,4 +475,4 @@ Annotated where the citation is load-bearing. Full bibliographic detail and the 
 
 *Correspondence:* wisdomhappy@playfulsincerity.org · [github.com/Playful-Sincerity/SSP-Synthetic-Sentiences-Project](https://github.com/Playful-Sincerity/SSP-Synthetic-Sentiences-Project)
 
-*This paper is a concept proposal for the integrated architecture. The companion paper, [Memory as World Model](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model), specifies the four-month Anthropic Fellows 2026 implementation target — the focused subsystem within this broader research program. Subsystem-level papers and a cross-model evaluation framework follow the implementation work.*
+*This paper is a concept proposal for the integrated architecture. The companion paper, [Memory as World Model](https://github.com/Playful-Sincerity/MWM-Memory-as-World-Model), specifies the focused memory subsystem within this broader research program. Subsystem-level papers and a cross-model evaluation framework follow the implementation work.*
