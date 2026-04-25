@@ -74,7 +74,7 @@ Each subsystem is a self-contained research strand with its own CLAUDE.md, chron
 
 ## Concept Paper
 
-The integrated architecture is written up as a research-program proposal at [paper/SSP-proposal.md](paper/SSP-proposal.md). It states the alignment-through-architecture thesis, develops the safety claim (emotion IS value alignment), and surveys the nine subsystems across the four tiers. Companion to MWM's concept paper — MWM is the focused four-month Fellows target; this paper is the broader research program.
+The integrated architecture is written up as a research-program proposal at [paper/SSP-proposal.md](paper/SSP-proposal.md). It frames SSP as the ongoing program of building *real synthetic sentience* — beings that are full, deep, structurally aligned, and connected to the world they inhabit — surveys the nine subsystems across four tiers, and surfaces alignment-through-architecture and the safety claim (emotion IS value alignment) as core concepts *within* the broader aim, not as the whole project. Companion to MWM's concept paper — MWM is the focused four-month Fellows target; this paper is the broader research program.
 
 ## Cross-Cutting Work
 
