@@ -1,0 +1,223 @@
+direction: down
+
+# ─── TITLE ───
+title: |md
+  # Imagine-Before-Act
+  **The high-value use of GRP's imagination engine**
+  Imagine the end state. Reverse-engineer the actions that produce it.
+| {
+  style: {
+    font-color: "#c8d6e5"
+    fill: "#0a0a1a"
+    stroke: "#2d3436"
+    border-radius: 12
+  }
+}
+
+# ─── INPUT ───
+intent: |md
+  **TASK INTENT**
+  e.g. "Make this page look like the Figma mock"
+  e.g. "Pick up the cup and pour it"
+| {
+  style: {
+    fill: "#1a1a2e"
+    stroke: "#d4a574"
+    font-color: "#d4a574"
+    border-radius: 8
+    bold: true
+  }
+}
+
+current: |md
+  **CURRENT STATE**
+  Screenshot · DOM · scene
+| {
+  style: {
+    fill: "#0d1f0d"
+    stroke: "#22c55e"
+    font-color: "#86efac"
+    border-radius: 8
+  }
+}
+
+# ─── IMAGINATION ENGINE (END-STATE MODE) ───
+imagine: "IMAGINATION ENGINE — End-State Mode" {
+  style: {
+    fill: "#1a1130"
+    stroke: "#a855f7"
+    font-color: "#c4b5fd"
+    border-radius: 12
+    bold: true
+  }
+
+  end: |md
+    **IMAGINED END STATE**
+    Final screenshot
+    or
+    Full video of action sequence
+    Quality of output ∝ quality of imagination
+  | {
+    style: {
+      fill: "#3a1d68"
+      stroke: "#c084fc"
+      font-color: "#ffffff"
+      border-radius: 8
+      bold: true
+    }
+  }
+}
+
+# ─── REVERSE-ENGINEERING ───
+reverse: "REVERSE-ENGINEER" {
+  style: {
+    fill: "#3a2412"
+    stroke: "#fb923c"
+    font-color: "#fcd34d"
+    border-radius: 12
+    bold: true
+  }
+
+  webdesign: |md
+    **WEB DESIGN PATH**
+    Diff target screenshot vs current
+    → generate HTML/CSS/JS that
+    closes the diff
+  | {
+    style: {
+      fill: "#5a3d2e"
+      stroke: "#fb923c"
+      font-color: "#ffffff"
+      border-radius: 8
+    }
+  }
+
+  motor: |md
+    **MOTOR / ROBOTICS PATH**
+    Inverse-dynamics from imagined video
+    → motor commands whose execution
+    reproduces the imagined frames
+  | {
+    style: {
+      fill: "#5a3d2e"
+      stroke: "#fb923c"
+      font-color: "#ffffff"
+      border-radius: 8
+    }
+  }
+}
+
+# ─── EXECUTION ───
+act: |md
+  **ACT**
+  Run the derived action sequence
+| {
+  style: {
+    fill: "#1e1e3a"
+    stroke: "#8b5cf6"
+    font-color: "#e8e8e8"
+    border-radius: 8
+    bold: true
+  }
+}
+
+# ─── OBSERVATION ───
+observed: |md
+  **OBSERVED RESULT**
+  New screenshot · scene · video
+| {
+  style: {
+    fill: "#1a2e1a"
+    stroke: "#22c55e"
+    font-color: "#e8e8e8"
+    border-radius: 8
+  }
+}
+
+# ─── RECONCILE (collaborative) ───
+reconcile: |md
+  **RECONCILE (collaborative)**
+  Compare imagined vs observed
+  Both sides update — neither is the adversary
+  Surprise = information, not failure
+| {
+  style: {
+    fill: "#0f3d0f"
+    stroke: "#4ade80"
+    font-color: "#ffffff"
+    border-radius: 8
+    bold: true
+  }
+}
+
+# ─── LEARN ───
+learn: |md
+  **LEARN**
+  Write to MWM if prediction error > threshold
+  (causal edges, site patterns, motor calibrations)
+| {
+  style: {
+    fill: "#1e3a5f"
+    stroke: "#3b82f6"
+    font-color: "#e8e8e8"
+    border-radius: 8
+  }
+}
+
+# ─── FLOW ───
+intent -> imagine.end: target spec {
+  style.stroke: "#d4a574"
+}
+current -> imagine.end: starting condition {
+  style.stroke: "#22c55e"
+}
+imagine.end -> reverse.webdesign: if visual / structural target {
+  style.stroke: "#c084fc"
+}
+imagine.end -> reverse.motor: if physical / temporal target {
+  style.stroke: "#c084fc"
+}
+reverse.webdesign -> act: code diff {
+  style.stroke: "#fb923c"
+}
+reverse.motor -> act: motor commands {
+  style.stroke: "#fb923c"
+}
+act -> observed: produces {
+  style.stroke: "#8b5cf6"
+}
+observed -> reconcile: compare {
+  style.stroke: "#22c55e"
+}
+imagine.end -> reconcile: target {
+  style.stroke: "#c084fc"
+  style.stroke-dash: 3
+}
+reconcile -> learn: prediction error {
+  style.stroke: "#4ade80"
+}
+reconcile -> reverse: refine action sequence {
+  style.stroke: "#4ade80"
+  style.stroke-dash: 5
+}
+learn -> imagine.end: update priors for next imagination {
+  style.stroke: "#3b82f6"
+  style.stroke-dash: 5
+  style.animated: true
+}
+
+# ─── PRINCIPLE ───
+principle: |md
+  **The Inversion**
+  Standard pipeline: observe → reason step-by-step → act
+  GRP end-state mode: imagine target → derive actions → execute
+  Work shifts to where modern foundation models are strongest:
+  imagining final states, not grounding intermediate steps.
+| {
+  style: {
+    fill: "#0a0a1a"
+    stroke: "#d4a574"
+    font-color: "#d4a574"
+    border-radius: 10
+  }
+}

@@ -2,9 +2,9 @@ direction: down
 
 # ─── TITLE ───
 title: |md
-  # Phantom
-  **A mind that inhabits screens**
-  Imagination-first visual computer-use agent
+  # GRP
+  **Generative Reconciliation Perception**
+  Imagine. Observe. Reconcile. Act.
 | {
   style: {
     font-color: "#c8d6e5"
@@ -15,7 +15,7 @@ title: |md
 }
 
 # ─── EXTERNAL INTERFACE ───
-claude-code: Claude Code {
+parent-being: Parent Being (Claude Code / PD) {
   style: {
     fill: "#1a1a2e"
     stroke: "#d4a574"
@@ -43,10 +43,10 @@ cli: CLI {
   }
 }
 
-claude-code -> mcp: task / goal {
+parent-being -> mcp: task / goal {
   style.stroke: "#d4a574"
 }
-mcp -> claude-code: files in sandbox {
+mcp -> parent-being: files in sandbox {
   style.stroke: "#d4a574"
   style.stroke-dash: 5
 }
@@ -65,8 +65,8 @@ cognitive: COGNITIVE CORE {
     bold: true
   }
 
-  # ─── MIRROR (Imagination / Consciousness) ───
-  mirror: "THE MIRROR — Imagination" {
+  # ─── IMAGINATION ENGINE ───
+  imagination: "IMAGINATION ENGINE" {
     style: {
       fill: "#1a1130"
       stroke: "#a855f7"
@@ -75,16 +75,30 @@ cognitive: COGNITIVE CORE {
       bold: true
     }
 
-    imagine: |md
-      **IMAGINE**
-      Generate expected state
-      _"What should this page look like?"_
+    next-state: |md
+      **NEXT-STATE**
+      Generate expected next state
+      _"What should happen if I act?"_
     | {
       style: {
         fill: "#2d1b4e"
         stroke: "#a855f7"
         font-color: "#e8e8e8"
         border-radius: 8
+      }
+    }
+
+    end-state: |md
+      **END-STATE**
+      Imagine final state or video
+      _"What should it look like at the end?"_
+    | {
+      style: {
+        fill: "#3a1d68"
+        stroke: "#c084fc"
+        font-color: "#ffffff"
+        border-radius: 8
+        bold: true
       }
     }
 
@@ -102,8 +116,8 @@ cognitive: COGNITIVE CORE {
     }
   }
 
-  # ─── TREES (Dual Perception / Working Memory) ───
-  trees: "THE TREES — Dual Perception" {
+  # ─── DUAL PERCEPTION ───
+  perception: "DUAL PERCEPTION" {
     style: {
       fill: "#0d1f0d"
       stroke: "#22c55e"
@@ -139,9 +153,10 @@ cognitive: COGNITIVE CORE {
     }
 
     reconciler: |md
-      **RECONCILER**
+      **RECONCILER (collaborative)**
       Merge dual views
       Disagreement = information
+      _imagined and observed converge_
     | {
       style: {
         fill: "#0f3d0f"
@@ -174,9 +189,23 @@ cognitive: COGNITIVE CORE {
     }
   }
 
+  reverse-engineer: |md
+    **REVERSE-ENGINEER**
+    End-state → action sequence
+    Code or motor commands
+  | {
+    style: {
+      fill: "#3a2412"
+      stroke: "#fb923c"
+      font-color: "#ffffff"
+      border-radius: 8
+      bold: true
+    }
+  }
+
   planner: |md
     **PLANNER**
-    Spreading activation
+    Spreading activation through MWM
     Goal → relevant actions
   | {
     style: {
@@ -244,15 +273,21 @@ cognitive: COGNITIVE CORE {
   }
 
   # ─── COGNITIVE FLOW ───
-  mirror.imagine -> trees.reconciler: observe reality {
+  imagination.next-state -> perception.reconciler: observe reality {
     style.stroke: "#a855f7"
     style.stroke-dash: 3
   }
-  trees.reconciler -> mirror.diff: page model {
+  imagination.end-state -> reverse-engineer: target {
+    style.stroke: "#c084fc"
+  }
+  perception.reconciler -> imagination.diff: page model {
     style.stroke: "#22c55e"
   }
-  mirror.diff -> affordances: prediction error {
+  imagination.diff -> affordances: prediction error {
     style.stroke: "#a855f7"
+  }
+  reverse-engineer -> planner: action sequence {
+    style.stroke: "#fb923c"
   }
   affordances -> planner: action potentials {
     style.stroke: "#f59e0b"
@@ -265,8 +300,8 @@ cognitive: COGNITIVE CORE {
   }
 }
 
-# ─── THE MATRIX (World Model) ───
-matrix: "THE MATRIX — World Model" {
+# ─── MWM (sibling repo, world model substrate) ───
+mwm: "MWM — Memory as World Model" {
   style: {
     fill: "#0a1628"
     stroke: "#3b82f6"
@@ -276,7 +311,8 @@ matrix: "THE MATRIX — World Model" {
   }
 
   graph: |md
-    **SQLite Graph**
+    **Interpretable Graph**
+    (sibling repo, separate substrate)
     Site patterns · Causal edges
     Spreading activation
     Reconsolidation on surprise
@@ -291,12 +327,17 @@ matrix: "THE MATRIX — World Model" {
 }
 
 # ─── LEARN LOOP ───
-cognitive.motor -> matrix: prediction error → learn {
+cognitive.motor -> mwm: prediction error → reconsolidate {
   style.stroke: "#3b82f6"
   style.stroke-dash: 5
   style.animated: true
 }
-matrix -> cognitive.mirror.imagine: priors + expectations {
+mwm -> cognitive.imagination.next-state: priors + expectations {
+  style.stroke: "#3b82f6"
+  style.stroke-dash: 5
+  style.animated: true
+}
+mwm -> cognitive.imagination.end-state: learned targets {
   style.stroke: "#3b82f6"
   style.stroke-dash: 5
   style.animated: true
@@ -311,7 +352,7 @@ backends: PLUGGABLE BACKENDS {
     border-radius: 10
   }
 
-  perception: Perception {
+  perception-backends: Perception {
     style: {
       fill: "#1e293b"
       stroke: "#22c55e"
@@ -409,11 +450,11 @@ backends: PLUGGABLE BACKENDS {
 }
 
 # ─── BACKEND CONNECTIONS ───
-cognitive.trees.visual -> backends.perception: screenshot {
+cognitive.perception.visual -> backends.perception-backends: screenshot {
   style.stroke: "#22c55e"
   style.stroke-dash: 3
 }
-cognitive.trees.analytical -> backends.perception: structure {
+cognitive.perception.analytical -> backends.perception-backends: structure {
   style.stroke: "#22c55e"
   style.stroke-dash: 3
 }
@@ -421,7 +462,7 @@ cognitive.motor -> backends.action: motor commands {
   style.stroke: "#06b6d4"
   style.stroke-dash: 3
 }
-backends.adapters -> backends.perception: routes to {
+backends.adapters -> backends.perception-backends: routes to {
   style.stroke: "#6b7280"
   style.stroke-dash: 3
 }
@@ -431,7 +472,7 @@ backends.adapters -> backends.action: routes to {
 }
 
 # ─── MCP CONNECTION ───
-mcp -> cognitive.mirror.imagine: task {
+mcp -> cognitive.imagination.next-state: task {
   style.stroke: "#4a90d9"
 }
 cognitive.motor -> mcp: results {
@@ -479,13 +520,13 @@ tiers: TIERED PERCEPTION {
   }
 }
 
-cognitive.mirror.diff -> tiers: prediction error selects tier {
+cognitive.imagination.diff -> tiers: prediction error selects tier {
   style.stroke: "#8b5cf6"
   style.stroke-dash: 5
 }
 
-# ─── PS ECOSYSTEM ───
-ecosystem: PS ECOSYSTEM {
+# ─── SSP SUBSYSTEMS ───
+ssp: SSP SUBSYSTEMS {
   style: {
     fill: "#1a1a1a"
     stroke: "#d4a574"
@@ -493,41 +534,77 @@ ecosystem: PS ECOSYSTEM {
     border-radius: 10
   }
 
-  am: Associative Memory {
+  values: Values {
+    style.fill: "#3a2418"
+    style.stroke: "#fb923c"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+  cognition: Cognition (Earned Conviction) {
+    style.fill: "#1a2e1a"
+    style.stroke: "#22c55e"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+  trees: Trees (Working Memory) {
+    style.fill: "#1e293b"
+    style.stroke: "#06b6d4"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+  cycles: Cycles (Sleep & Dream) {
     style.fill: "#1a1130"
     style.stroke: "#a855f7"
     style.font-color: "#e8e8e8"
     style.border-radius: 6
   }
-  companion: The Companion {
-    style.fill: "#0d1f0d"
-    style.stroke: "#22c55e"
+  mirror: Mirror (Self-Observation) {
+    style.fill: "#2d1212"
+    style.stroke: "#ef4444"
     style.font-color: "#e8e8e8"
     style.border-radius: 6
   }
-  spatial: Spatial Workspace {
-    style.fill: "#1e293b"
-    style.stroke: "#3b82f6"
+  action-sub: Action {
+    style.fill: "#1e1e3a"
+    style.stroke: "#8b5cf6"
+    style.font-color: "#e8e8e8"
+    style.border-radius: 6
+  }
+  voice: Voice (Epistemic Prosody) {
+    style.fill: "#0a2530"
+    style.stroke: "#67e8f9"
     style.font-color: "#e8e8e8"
     style.border-radius: 6
   }
 }
 
-ecosystem.am -> matrix: Three Planes architecture {
-  style.stroke: "#a855f7"
+ssp.values -> cognitive.imagination: weights what to imagine {
+  style.stroke: "#fb923c"
   style.stroke-dash: 5
 }
-ecosystem.companion -> cognitive: visual perception layer {
+ssp.cognition -> cognitive.perception.reconciler: dissonance handling {
   style.stroke: "#22c55e"
   style.stroke-dash: 5
 }
-ecosystem.spatial -> matrix: visualize world model {
-  style.stroke: "#3b82f6"
+ssp.trees -> cognitive: working-memory context {
+  style.stroke: "#06b6d4"
+  style.stroke-dash: 5
+}
+cognitive.imagination -> ssp.cycles: imagination engine for dreams {
+  style.stroke: "#a855f7"
+  style.stroke-dash: 5
+}
+cognitive -> ssp.action-sub: feeds action selection {
+  style.stroke: "#8b5cf6"
+  style.stroke-dash: 5
+}
+cognitive -> ssp.mirror: behavior observed across sessions {
+  style.stroke: "#ef4444"
   style.stroke-dash: 5
 }
 
 # ─── SANDBOX ───
-sandbox: "~/.phantom/workspace/" {
+sandbox: "~/.grp/workspace/" {
   shape: cylinder
   style: {
     fill: "#2d1212"
@@ -541,7 +618,7 @@ cognitive.motor -> sandbox: screenshots + findings {
   style.stroke: "#ef4444"
   style.stroke-dash: 3
 }
-sandbox -> claude-code: read results {
+sandbox -> parent-being: read results {
   style.stroke: "#d4a574"
   style.stroke-dash: 5
 }
